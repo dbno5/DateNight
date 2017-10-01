@@ -2,6 +2,7 @@ package com.billyji.datenight;
 
 import android.app.Activity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,22 +11,42 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.billyji.datenight.activities.FoodChoiceActivity;
 import com.squareup.picasso.Picasso;
 import com.yelp.fusion.client.models.Business;
 import com.yelp.fusion.client.models.Category;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FoodChoiceListAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
+
     private final List<Business> fiveRandomBusinesses;
 
-    public FoodChoiceListAdapter(Activity context, List<Business> fiveRandomBusinesses, List<String> listSizeReference) {
+    public FoodChoiceListAdapter(Activity context, List<String> listSizeReference) {
         super(context, R.layout.food_list, listSizeReference);
 
         this.context=context;
-        this.fiveRandomBusinesses = fiveRandomBusinesses;
+        this.fiveRandomBusinesses = new ArrayList<>();
+    }
+
+
+    public void update(View view)
+    {
+        TextView chooseRestaurants = view.getRootView().findViewById(R.id.choose_restaurants);
+        switch(FoodChoiceActivity.restaurantReference.size())
+        {
+            case 1:
+                chooseRestaurants.setText("Good shit");
+                break;
+            case 3:
+                chooseRestaurants.setText("Eliminate two more!");
+                break;
+            default:
+                break;
+        }
     }
 
     @Override
@@ -34,24 +55,38 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.food_list, null,true);
 
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        context.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-
         setText(rowView, position);
         setImages(rowView, position);
 
-
-        rowView.setMinimumHeight(height/5);
+        //rowView.setMinimumHeight(height/5);
         return rowView;
     }
 
-    private void setImages(View rowView, int position)
-    {
 
+
+
+    private void setImages(final View rowView, final int position)
+    {
         ImageView foodPicture = rowView.findViewById(R.id.picture);
         ImageButton removeOption = rowView.findViewById(R.id.remove_option);
+
+        removeOption.setOnClickListener(
+            new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    if(fiveRandomBusinesses.size() == 0)
+                        return;
+                    fiveRandomBusinesses.remove(position);
+                    FoodChoiceActivity.restaurantReference.remove(0);
+                    update(view);
+                    notifyDataSetChanged();
+                    Log.e("hey", "hey");
+                }
+            }
+        );
+
 
         Picasso
             .with(context)
@@ -79,9 +114,20 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
             allCategories.append(category.getTitle());
             allCategories.append(", ");
         }
-        allCategories.deleteCharAt(allCategories.length() - 1);
+        allCategories.deleteCharAt(allCategories.length() - 2);
 
         restaurantCategories.setText(allCategories);
     }
+
+    public void addBusiness(Business business)
+    {
+        fiveRandomBusinesses.add(business);
+    }
+
+    public List<Business> getFiveRandomBusinesses()
+    {
+        return fiveRandomBusinesses;
+    }
+
 
 }

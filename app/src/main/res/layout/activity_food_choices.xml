@@ -4,12 +4,19 @@
     android:layout_height="match_parent"
     tools:context="com.billyji.datenight.activities.MainActivity">
 
+    <TextView
+        android:id="@+id/choose_restaurants"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminate two!"
+        android:layout_alignParentTop="true"/>
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" >
+        android:layout_below="@+id/choose_restaurants" >
     </ListView>
 
 </RelativeLayout>
