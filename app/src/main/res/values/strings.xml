@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Food Finder</string>
+    <string name="action_settings">Settings</string>
+    <string name="main_txt_title">Tap button below to fetch some eats.</string>
+    <string name="title_activity_detail_map">DetailMapActivity</string>
+    <string name="title_activity_maps">Current Place Details</string>
+    <string name="default_info_title">Default Location</string>
+    <string name="default_info_snippet">No places found, because location permission is disabled.</string>
+    <string name="progess_dialog_text">Finding you some eats…</string>
+    <string name="find_food_button">Find me food!</string>
+    <string name="distance">Maximum distance?</string>
+    <string name="min_stars">Minimum stars?</string>
+    <string name="min_rating">Minimum rating?</string>
+    <string name="max_price">How many $ signs?</string>
+
+    <string name="setting_none">Sorry, no settings on free app.</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">Cancel</string>
+    <string name="alert_dialog_two_buttons_title">Reminder</string>
+    <string name="showmoreinforforrequest"><![CDATA[Location permission should to be granted to use this app. Otherwise we can only use with a default location. You can go into Device settings->App->This app-> and Permissions to allow location requests.]]></string>
+    <string name="permission_request_title">Permission Request</string>
+    <string name="location_not_enabled_dialog_message">Location is not enabled. If location isn\'t turned on, the default location or last known location will be used for demo.</string>
+</resources>
