@@ -31,7 +31,7 @@ public class FinalFoodChoiceListAdapter extends ArrayAdapter
 
     public FinalFoodChoiceListAdapter(Activity context, List<String> listSizeReference, List<Business> lastRestaurant)
     {
-        super(context, R.layout.food_list, listSizeReference);
+        super(context, R.layout.selected_food_detail, listSizeReference);
 
         this.context = context;
         this.business = lastRestaurant.get(0);
@@ -45,14 +45,14 @@ public class FinalFoodChoiceListAdapter extends ArrayAdapter
         View rowView;
         if (test)
         {
-            rowView = inflater.inflate(R.layout.food_list, null, true);
+            rowView = inflater.inflate(R.layout.selected_food_detail, null, true);
             setText(rowView, business);
             setImages(rowView, business);
             test = false;
         }
         else
         {
-            rowView = inflater.inflate(R.layout.food_list, null, true);
+            rowView = inflater.inflate(R.layout.selected_food_detail, null, true);
             setText(rowView, business);
         }
         //rowView.setMinimumHeight(height/5);

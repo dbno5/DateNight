@@ -8,36 +8,10 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-
-public class AppUtility
+class AppUtility
 {
-
-    private static Set<String> lastKnownZipCode;
-
-    public static Set getLastKnownZipCode()
-    {
-        return lastKnownZipCode;
-    }
-
-    public static void setLastKnownZipCode(Set<String> setLastKnownZipCodes)
-    {
-        lastKnownZipCode = setLastKnownZipCodes;
-    }
-
-    public static void getZipCodesFromAddressList(List<Address> listOfAddresses, Set<String> zips)
-    {
-        for (Address address : listOfAddresses)
-        {
-            if (address.getPostalCode() != null)
-            {
-                zips.add(address.getPostalCode());
-            }
-        }
-    }
-
-    public static List<Address> getAddressesFromGeoCoder(Context context, double latitude, double longitude, int addressesToReturn)
+    static List<Address> getAddressesFromGeoCoder(Context context, double latitude, double longitude, int addressesToReturn)
     {
         List<Address> listOfAddresses = null;
         Geocoder gc = new Geocoder(context);

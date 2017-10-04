@@ -26,7 +26,7 @@ public class YelpRunner
     private double latitudeToSearch;
     private double longitudeToSearch;
 
-    public static List<Business> listBusinesses = new ArrayList<>();
+    static List<Business> listBusinesses = new ArrayList<>();
 
     private boolean usedDefaultLocation = false;
 
@@ -46,24 +46,13 @@ public class YelpRunner
             YelpFusionApi yelpFusionApi = apiFactory.createAPI(CLIENT_ID, CLIENT_SECRET);
             Map<String, String> params = new HashMap<>();
 
-
             //Our default locations
-            if (latitudeToSearch == 0 & longitudeToSearch == 0)
+            if (latitudeToSearch == 0 && longitudeToSearch == 0)
             {
+                Log.e(Double.toString(latitudeToSearch), Double.toString(longitudeToSearch));
                 usedDefaultLocation = true;
-                if (AppConstant.DEBUG) { Log.d(this.getClass().getSimpleName() + ">", "Using default location - Terrigal Australia"); }
-
-                //New York - Upper West Side
-                //params.put("latitude", "40.7150");
-                //params.put("longitude", "-73.9839");
-
-                //Williamsburg - we are feeling hip
-                //params.put("latitude", "40.7081");
-                //params.put("longitude", "-73.9571");
-
-                //Terrigal - Welcome to Australia
-                params.put("latitude", "-33.4462");
-                params.put("longitude", "151.4447");
+                params.put("latitude", "32.7157");
+                params.put("longitude", "-117.071869");
             }
             else
             {
@@ -74,7 +63,7 @@ public class YelpRunner
 
             //Set some additional parameters
             params.put("radius", "8500"); //5 miles
-            params.put("limit", "25");
+            params.put("limit", "50");
             params.put("sort_by", "distance");
             params.put("term", "restaurants");
 
@@ -82,36 +71,21 @@ public class YelpRunner
             Call<SearchResponse> call = yelpFusionApi.getBusinessSearch(params);
             Response<SearchResponse> response = call.execute();
 
-
             if (response.code() != 200)
             {
-                //We could no get data
+                //We could not get data
                 return "Loading page error-" + response.code();
             }
 
-            //ArrayList<Business> businesses = response.body().getBusinesses();
-
             listBusinesses = response.body().getBusinesses();
-
-            //System.out.println("Number of restaurants found:"+businesses.size());
-
-
         }
         catch (IOException e)
         {
-            if (AppConstant.DEBUG) { Log.e(this.getClass().getSimpleName() + ">", "We had an error:" + "Error:" + e.getMessage()); }
             e.printStackTrace();
             return "We had an error:" + e.getMessage();
         }
 
         return WE_FETCHED_DATA;
-    }
-
-    public static void main(String[] args)
-    {
-        //YelpRunner testYelp=new YelpRunner();
-        //testYelp.getDataFromYelp();
-        //System.exit(1);
     }
 
     public boolean isUsedDefaultLocation()

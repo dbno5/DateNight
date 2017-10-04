@@ -1,51 +1,30 @@
 package com.billyji.datenight.activities;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.billyji.datenight.ExpandAnimation;
 import com.billyji.datenight.FinalFoodChoiceListAdapter;
 import com.billyji.datenight.FoodChoiceListAdapter;
-import com.billyji.datenight.FoodSelectionDetails;
 import com.billyji.datenight.R;
-import com.billyji.datenight.YelpRunner;
-import com.nhaarman.listviewanimations.appearance.simple.AlphaInAnimationAdapter;
-import com.nhaarman.listviewanimations.appearance.simple.SwingBottomInAnimationAdapter;
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
-import com.squareup.picasso.Picasso;
-import com.yelp.fusion.client.models.Business;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 
 public class FoodChoiceActivity extends AppCompatActivity
 {
@@ -53,8 +32,6 @@ public class FoodChoiceActivity extends AppCompatActivity
     private FoodChoiceListAdapter adapter;
     private FinalFoodChoiceListAdapter adapterTwo;
 
-    private Context context;
-    private PopupWindow mPopupWindow;
     @BindView(R.id.list)
     DynamicListView list;
     @BindView(R.id.toolbar)
@@ -65,31 +42,30 @@ public class FoodChoiceActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_choices);
-        context = getApplicationContext();
         ButterKnife.bind(this);
 
         setUpListAdapter();
         setSupportActionBar(toolbar);
-        Toast.makeText(context, "Swipe away two options!", Toast.LENGTH_LONG)
+        Toast.makeText(this, "Swipe away two options!", Toast.LENGTH_LONG)
             .show();
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.menu_options, menu);
-
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // action with ID action_refresh was selected
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        switch (item.getItemId())
+        {
             case R.id.action_refresh:
                 setUpListAdapter();
                 break;
-            // action with ID action_settings was selected
             case R.id.action_settings:
                 Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
                     .show();
@@ -126,20 +102,26 @@ public class FoodChoiceActivity extends AppCompatActivity
     {
         super.onStart();
         list.enableSwipeToDismiss(
-            new OnDismissCallback() {
+            new OnDismissCallback()
+            {
                 @Override
-                public void onDismiss(@NonNull final ViewGroup listView, @NonNull final int[] reverseSortedPositions) {
-                    for (int position : reverseSortedPositions) {
-                        adapter.removeBusiness(position, listView);
+                public void onDismiss(@NonNull final ViewGroup listView, @NonNull final int[] reverseSortedPositions)
+                {
+                    for (int position : reverseSortedPositions)
+                    {
+                        adapter.removeBusiness(position);
                     }
                 }
             }
         );
 
-        list.setOnItemClickListener(new OnItemClickListener() {
+        list.setOnItemClickListener(new OnItemClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(
+                AdapterView<?> parent, View view,
+                int position, long id)
+            {
 
 //                View toolbar = view.getRootView().findViewById(R.id.expanding_cell);
 //

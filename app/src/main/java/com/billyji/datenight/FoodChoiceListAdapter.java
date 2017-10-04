@@ -1,13 +1,11 @@
 package com.billyji.datenight;
 
 import android.app.Activity;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -61,7 +59,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
 
     }
 
-    public void update()
+    private void update()
     {
         switch (FoodChoiceActivity.restaurantReference.size())
         {
@@ -80,16 +78,16 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup parent)
+    public @NonNull
+    View getView(int position, View view, @NonNull ViewGroup parent)
     {
-
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.food_list, null, true);
+        //No need for ViewHolder pattern here as scrolling never occurs
+        View rowView = inflater.inflate(R.layout.food_list, parent, false);
 
         setText(rowView, position);
         setImages(rowView, position);
 
-        //rowView.setMinimumHeight(height/5);
         return rowView;
     }
 
@@ -97,20 +95,12 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     private void setImages(final View rowView, final int position)
     {
         ImageView foodPicture = rowView.findViewById(R.id.picture);
-//        ImageButton removeOption = rowView.findViewById(R.id.remove_option);
-
 
         Picasso
             .with(context)
             .load(fiveRandomBusinesses.get(position).getImageUrl())
             .fit()
             .into(foodPicture);
-//
-//        Picasso
-//            .with(context)
-//            .load(R.drawable.x)
-//            .fit()
-//            .into(removeOption);
     }
 
     private void setText(View rowView, int position)
@@ -131,12 +121,12 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
         restaurantCategories.setText(allCategories);
     }
 
-    public void addBusiness(Business business)
+    private void addBusiness(Business business)
     {
         fiveRandomBusinesses.add(business);
     }
 
-    public void removeBusiness(int position, ViewGroup view)
+    public void removeBusiness(int position)
     {
         if (fiveRandomBusinesses.size() == 1)
         { return; }
