@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:fitsSystemWindows="true">
@@ -13,7 +12,8 @@
         android:paddingLeft="24dp"
         android:paddingRight="24dp">
 
-        <ImageView android:src="@drawable/logo"
+        <ImageView
+            android:src="@drawable/logo"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_marginBottom="24dp"
@@ -25,7 +25,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/max_distance"
+
+            <EditText
+                android:id="@+id/max_distance"
                 android:inputType="numberDecimal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,11 +40,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/min_stars"
+
+            <EditText
+                android:id="@+id/min_stars"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="@string/min_stars"/>
+                android:hint="@string/min_stars" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -50,23 +54,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/max_price"
+
+            <EditText
+                android:id="@+id/max_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
-                android:hint="@string/max_price"/>
+                android:hint="@string/max_price" />
         </android.support.design.widget.TextInputLayout>
 
         <!--<android.support.design.widget.TextInputLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginBottom="8dp">-->
-            <!--<EditText android:id="@+id/min_rating"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:inputType="numberDecimal"-->
-                <!--android:hint="@string/min_rating"/>-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:layout_marginBottom="8dp">-->
+        <!--<EditText android:id="@+id/min_rating"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:inputType="numberDecimal"-->
+        <!--android:hint="@string/min_rating"/>-->
         <!--</android.support.design.widget.TextInputLayout>-->
 
         <!-- Signup Button -->
@@ -78,7 +84,7 @@
             android:layout_marginBottom="24dp"
             android:padding="12dp"
             android:textAllCaps="false"
-            android:text="@string/find_food_button"/>
+            android:text="@string/find_food_button" />
 
     </LinearLayout>
 </ScrollView>

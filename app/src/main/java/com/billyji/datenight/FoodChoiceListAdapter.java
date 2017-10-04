@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.billyji.datenight.activities.FoodChoiceActivity;
 import com.squareup.picasso.Picasso;
@@ -18,31 +19,60 @@ import com.yelp.fusion.client.models.Category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
-public class FoodChoiceListAdapter extends ArrayAdapter<String> {
+public class FoodChoiceListAdapter extends ArrayAdapter<String>
+{
 
     private final Activity context;
 
     private final List<Business> fiveRandomBusinesses;
 
-    public FoodChoiceListAdapter(Activity context, List<String> listSizeReference) {
+    public FoodChoiceListAdapter(Activity context, List<String> listSizeReference)
+    {
         super(context, R.layout.food_list, listSizeReference);
 
-        this.context=context;
+        this.context = context;
         this.fiveRandomBusinesses = new ArrayList<>();
+        getFiveBusinesses();
+
     }
 
-
-    public void update(View view)
+    private void getFiveBusinesses()
     {
-        TextView chooseRestaurants = view.getRootView().findViewById(R.id.choose_restaurants);
-        switch(FoodChoiceActivity.restaurantReference.size())
+        Random r = new Random();
+
+        while (fiveRandomBusinesses.size() < 5 && YelpRunner.listBusinesses.size() > 0)
+        {
+            int randomBusiness = r.nextInt(YelpRunner.listBusinesses.size());
+            Business curBusiness = YelpRunner.listBusinesses.get(randomBusiness);
+
+            if (withinParameters(curBusiness) && !fiveRandomBusinesses.contains(curBusiness))
+            {
+                addBusiness(curBusiness);
+            }
+        }
+    }
+
+    private boolean withinParameters(Business business)
+    {
+        return business.getRating() > FoodSelectionDetails.getMinRating()
+            && business.getPrice().length() < Integer.parseInt(FoodSelectionDetails.getMaxPrice());
+
+    }
+
+    public void update()
+    {
+        switch (FoodChoiceActivity.restaurantReference.size())
         {
             case 1:
-                chooseRestaurants.setText("Good shit");
+                Toast.makeText(context, "Congratulations!", Toast.LENGTH_SHORT)
+                    .show();
+                ((FoodChoiceActivity) context).expandItem();
                 break;
             case 3:
-                chooseRestaurants.setText("Eliminate two more!");
+                Toast.makeText(context, "Remove two more!", Toast.LENGTH_SHORT)
+                    .show();
                 break;
             default:
                 break;
@@ -50,10 +80,11 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
     }
 
     @Override
-    public View getView(int position,View view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent)
+    {
 
-        LayoutInflater inflater=context.getLayoutInflater();
-        View rowView=inflater.inflate(R.layout.food_list, null,true);
+        LayoutInflater inflater = context.getLayoutInflater();
+        View rowView = inflater.inflate(R.layout.food_list, null, true);
 
         setText(rowView, position);
         setImages(rowView, position);
@@ -63,29 +94,10 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
     }
 
 
-
-
     private void setImages(final View rowView, final int position)
     {
         ImageView foodPicture = rowView.findViewById(R.id.picture);
-        ImageButton removeOption = rowView.findViewById(R.id.remove_option);
-
-        removeOption.setOnClickListener(
-            new View.OnClickListener()
-            {
-                @Override
-                public void onClick(View view)
-                {
-                    if(fiveRandomBusinesses.size() == 0)
-                        return;
-                    fiveRandomBusinesses.remove(position);
-                    FoodChoiceActivity.restaurantReference.remove(0);
-                    update(view);
-                    notifyDataSetChanged();
-                    Log.e("hey", "hey");
-                }
-            }
-        );
+//        ImageButton removeOption = rowView.findViewById(R.id.remove_option);
 
 
         Picasso
@@ -93,12 +105,12 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
             .load(fiveRandomBusinesses.get(position).getImageUrl())
             .fit()
             .into(foodPicture);
-
-        Picasso
-            .with(context)
-            .load(R.drawable.x)
-            .fit()
-            .into(removeOption);
+//
+//        Picasso
+//            .with(context)
+//            .load(R.drawable.x)
+//            .fit()
+//            .into(removeOption);
     }
 
     private void setText(View rowView, int position)
@@ -109,7 +121,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
         TextView restaurantCategories = rowView.findViewById(R.id.categories);
 
         StringBuilder allCategories = new StringBuilder();
-        for(Category category : fiveRandomBusinesses.get(position).getCategories())
+        for (Category category : fiveRandomBusinesses.get(position).getCategories())
         {
             allCategories.append(category.getTitle());
             allCategories.append(", ");
@@ -122,6 +134,17 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
     public void addBusiness(Business business)
     {
         fiveRandomBusinesses.add(business);
+    }
+
+    public void removeBusiness(int position, ViewGroup view)
+    {
+        if (fiveRandomBusinesses.size() == 1)
+        { return; }
+
+        fiveRandomBusinesses.remove(position);
+        FoodChoiceActivity.restaurantReference.remove(0);
+        update();
+        notifyDataSetChanged();
     }
 
     public List<Business> getFiveRandomBusinesses()
