@@ -7,20 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.billyji.datenight.activities.FoodChoiceActivity;
 import com.squareup.picasso.Picasso;
 import com.yelp.fusion.client.models.Business;
 import com.yelp.fusion.client.models.Category;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-/**
- * Created by bj0716 on 10/3/17.
- */
 
 public class FinalFoodChoiceListAdapter extends ArrayAdapter
 {

@@ -46,9 +46,8 @@ public class FoodChoiceActivity extends AppCompatActivity
 
         setUpListAdapter();
         setSupportActionBar(toolbar);
-        Toast.makeText(this, "Swipe away two options!", Toast.LENGTH_LONG)
+        Toast.makeText(this, "Swipe away two options!", Toast.LENGTH_SHORT)
             .show();
-
     }
 
     @Override

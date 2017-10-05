@@ -1,14 +1,18 @@
 package com.billyji.datenight.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -94,12 +98,11 @@ public class MainActivity extends AppCompatActivity
     void findFood()
     {
         setFoodSelectionDetails();
+        if(!checkConnection())
+        {
+            return;
+        }
         LocationGetter.getLocation(this);
-        new DownloadMessage(this).execute();
-    }
-
-    public void doPositiveClick()
-    {
         new DownloadMessage(this).execute();
     }
 
@@ -113,6 +116,29 @@ public class MainActivity extends AppCompatActivity
             "2" : m_maxPrice.getText().toString());
     }
 
+    public boolean checkConnection()
+    {
+        ConnectivityManager cm =
+            (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork;
+
+        if (cm != null)
+        {
+            activeNetwork = cm.getActiveNetworkInfo();
+            boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+            if (!isConnected)
+            {
+                Toast toast = Toast.makeText(this, "There is no network connection.", Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+            return isConnected;
+        }
+
+        return false;
+    }
 
     private static class DownloadMessage extends AsyncTask<URL, Integer, String>
     {
