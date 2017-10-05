@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.billyji.datenight.FinalFoodChoiceListAdapter;
@@ -18,6 +22,7 @@ import com.billyji.datenight.R;
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,10 +70,6 @@ public class FoodChoiceActivity extends AppCompatActivity
             case R.id.action_refresh:
                 setUpListAdapter();
                 break;
-            case R.id.action_settings:
-                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT)
-                    .show();
-                break;
             default:
                 break;
         }
@@ -79,7 +80,7 @@ public class FoodChoiceActivity extends AppCompatActivity
     public void expandItem()
     {
         restaurantReference = new ArrayList<>(Arrays.asList("x", "x"));
-        adapterTwo = new FinalFoodChoiceListAdapter(this, restaurantReference, adapter.getFiveRandomBusinesses());
+        adapterTwo = new FinalFoodChoiceListAdapter(this, restaurantReference, adapter.getFiveRandomBusinesses().get(0));
         SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapterTwo);
 
         animationAdapter.setAbsListView(list);
@@ -122,72 +123,7 @@ public class FoodChoiceActivity extends AppCompatActivity
                 int position, long id)
             {
 
-//                View toolbar = view.getRootView().findViewById(R.id.expanding_cell);
-//
-//                // Creating the expand animation for the item
-//                ExpandAnimation expandAni = new ExpandAnimation(toolbar, 500);
-//
-//                // Start the animation on the toolbar
-//                toolbar.startAnimation(expandAni);
 
-
-//                LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-//
-//
-//                View customView = inflater.inflate(R.layout.popup_dialog, null);
-//                ImageView tits = customView.findViewById(R.id.tv);
-//
-//
-////                    ImageView imageView = customView.findViewById(R.id.linear);
-//
-//                Picasso
-//                    .with(context)
-//                    .load(adapter.getFiveRandomBusinesses().get(position).getImageUrl())
-//                    .fit()
-//                    .into(tits);
-//                /*
-//                    public PopupWindow (View contentView, int width, int height)
-//                        Create a new non focusable popup window which can display the contentView.
-//                        The dimension of the window must be passed to this constructor.
-//
-//                        The popup does not provide any background. This should be handled by
-//                        the content view.
-//
-//                    Parameters
-//                        contentView : the popup's content
-//                        width : the popup's width
-//                        height : the popup's height
-//                */
-//
-//                // Inflate the custom layout/view
-//
-//                // Initialize a new instance of popup window
-//                mPopupWindow = new PopupWindow(
-//                    customView,
-//                    LayoutParams.WRAP_CONTENT,
-//                    LayoutParams.WRAP_CONTENT
-//                );
-//
-//                mPopupWindow.setFocusable(true);
-//
-//
-//
-//                /*
-//                    public void showAtLocation (View parent, int gravity, int x, int y)
-//                        Display the content view in a popup window at the specified location. If the
-//                        popup window cannot fit on screen, it will be clipped.
-//                        Learn WindowManager.LayoutParams for more information on how gravity and the x
-//                        and y parameters are related. Specifying a gravity of NO_GRAVITY is similar
-//                        to specifying Gravity.LEFT | Gravity.TOP.
-//
-//                    Parameters
-//                        parent : a parent view to get the getWindowToken() token from
-//                        gravity : the gravity which controls the placement of the popup window
-//                        x : the popup's x location offset
-//                        y : the popup's y location offset
-//                */
-//                // Finally, show the popup window at the center location of root relative layout
-//                mPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
         });
     }

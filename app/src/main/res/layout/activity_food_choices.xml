@@ -13,7 +13,6 @@
         android:minHeight="?attr/actionBarSize"
         android:titleTextColor="#ffffff"></android.support.v7.widget.Toolbar>
 
-
     <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
         android:id="@+id/list"
         android:paddingLeft="5dp"

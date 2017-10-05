@@ -1,12 +1,21 @@
 package com.billyji.datenight;
 
+import android.animation.Animator;
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,8 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+
 public class FoodChoiceListAdapter extends ArrayAdapter<String>
 {
+    boolean isImageFitToScreen;
 
     private final Activity context;
 
@@ -94,13 +106,42 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
 
     private void setImages(final View rowView, final int position)
     {
-        ImageView foodPicture = rowView.findViewById(R.id.picture);
+        final ImageView foodPicture = rowView.findViewById(R.id.picture);
 
         Picasso
             .with(context)
             .load(fiveRandomBusinesses.get(position).getImageUrl())
             .fit()
             .into(foodPicture);
+
+        final LayoutInflater inflater = context.getLayoutInflater();
+        final View customView = inflater.inflate(R.layout.popup_dialog, null);
+        final ImageView tits = customView.findViewById(R.id.tv);
+
+        foodPicture.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Picasso
+                    .with(context)
+                    .load(fiveRandomBusinesses.get(position).getImageUrl())
+                    .fit()
+                    .into(tits);
+
+                // Initialize a new instance of popup window
+                PopupWindow mPopupWindow = new PopupWindow(
+                    customView,
+                    LayoutParams.WRAP_CONTENT,
+                    LayoutParams.WRAP_CONTENT
+                );
+
+                mPopupWindow.setFocusable(true);
+
+                // Finally, show the popup window at the center location of root relative layout
+                mPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
+            }
+        });
     }
 
     private void setText(View rowView, int position)

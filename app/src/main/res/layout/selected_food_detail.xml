@@ -6,56 +6,39 @@
     android:orientation="horizontal"
     android:descendantFocusability="blocksDescendants">
 
-
-    <!--  ListRow Left sied Thumbnail image -->
     <LinearLayout
-        android:id="@+id/thumbnail"
+        android:id="@+id/number_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <!-- Number -->
+    <TextView
+        android:id="@+id/number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/image_bg"
-        android:layout_marginRight="5dip">
-
-        <ImageView
-            android:id="@+id/picture"
-            android:layout_width="100dp"
-            android:layout_height="100dp" />
+        android:typeface="sans"
+        android:textSize="18sp"/>
 
     </LinearLayout>
 
-    <!-- Title Of Song-->
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
-        android:textColor="#040404"
-        android:typeface="sans"
-        android:textStyle="bold" />
-
     <!-- Artist Name -->
     <TextView
-        android:id="@+id/categories"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:textColor="#343434"
-        android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail" />
-    <!-- Rightend Duration -->
-    <TextView
-        android:id="@+id/duration"
+        android:id="@+id/address"
+        android:text="Navigate me!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/title"
-        android:gravity="right"
-        android:layout_marginRight="5dip"
-        android:textColor="#10bcc9"
-        android:textStyle="bold" />
+        android:layout_marginTop="20dip"
+        android:textSize="18sp"
+        android:layout_below="@+id/number_layout" />
 
+    <!-- Rightend Duration -->
+    <TextView
+        android:id="@+id/website_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dip"
+        android:layout_below="@+id/address"
+        android:textColor="#10bcc9"
+        />
 
     <!--&lt;!&ndash; Rightend Arrow &ndash;&gt;-->
     <!--<ImageButton-->
