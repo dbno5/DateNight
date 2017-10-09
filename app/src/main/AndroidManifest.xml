@@ -25,9 +25,13 @@
             </intent-filter>
         </activity>
 
+
+        <activity android:name="com.billyji.datenight.activities.NetflixActivity"></activity>
+
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDavakwBMruXB53FhwPskU-YmAaQju-ql4" />
+            android:value="@string/yelp_api_key" />
 
         <activity
             android:name="com.billyji.datenight.activities.FoodChoiceActivity"

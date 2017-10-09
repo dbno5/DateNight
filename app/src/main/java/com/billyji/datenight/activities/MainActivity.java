@@ -97,13 +97,15 @@ public class MainActivity extends AppCompatActivity
     @OnClick(R.id.find_food)
     void findFood()
     {
-        setFoodSelectionDetails();
-        if(!checkConnection())
-        {
-            return;
-        }
-        LocationGetter.getLocation(this);
-        new DownloadMessage(this).execute();
+        Intent intent = new Intent(this, NetflixActivity.class);
+        startActivity(intent);
+//        setFoodSelectionDetails();
+//        if(!checkConnection())
+//        {
+//            return;
+//        }
+//        LocationGetter.getLocation(this);
+//        new DownloadMessage(this).execute();
     }
 
     private void setFoodSelectionDetails()
@@ -158,7 +160,7 @@ public class MainActivity extends AppCompatActivity
             try
             {
                 //Gets the restaurant data using coordinates.
-                yelpRunner = new YelpRunner(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast());
+                yelpRunner = new YelpRunner(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get());
                 dataFromYelp = yelpRunner.getDataFromYelp();
             }
             catch (Exception e)

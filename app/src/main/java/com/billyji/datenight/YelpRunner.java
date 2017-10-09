@@ -1,5 +1,6 @@
 package com.billyji.datenight;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.yelp.fusion.client.connection.YelpFusionApi;
@@ -20,8 +21,8 @@ public class YelpRunner
 {
 
     public static final String WE_FETCHED_DATA = "We fetched data...";
-    private static final String CLIENT_ID = "gQy70Nnii0ZWnS-LfcwiPg";
-    private static final String CLIENT_SECRET = "SVq93NKM4nKfU8NLEzcFkCottzAGEJ0c63i2tNcHOloqWgQX6jFVwy7vyV9hQlZB";
+    private final String CLIENT_ID;
+    private final String CLIENT_SECRET;
 
     private double latitudeToSearch;
     private double longitudeToSearch;
@@ -30,11 +31,13 @@ public class YelpRunner
 
     private boolean usedDefaultLocation = false;
 
-    public YelpRunner(double latitudeToSearch, double longitudeToSearch)
+    public YelpRunner(double latitudeToSearch, double longitudeToSearch, Context context)
     {
 
         this.latitudeToSearch = latitudeToSearch;
         this.longitudeToSearch = longitudeToSearch;
+        CLIENT_ID = context.getString(R.string.client_id);
+        CLIENT_SECRET = context.getString(R.string.client_secret);
     }
 
     public String getDataFromYelp()
