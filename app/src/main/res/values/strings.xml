@@ -12,6 +12,9 @@
     <string name="min_stars">Minimum stars?</string>
     <string name="min_rating">Minimum rating?</string>
     <string name="max_price">How many $ signs?</string>
+    <string name="client_id">gQy70Nnii0ZWnS-LfcwiPg</string>
+    <string name="client_secret">SVq93NKM4nKfU8NLEzcFkCottzAGEJ0c63i2tNcHOloqWgQX6jFVwy7vyV9hQlZB</string>
+    <string name="yelp_api_key">AIzaSyDavakwBMruXB53FhwPskU-YmAaQju-ql4</string>
 
     <string name="setting_none">Sorry, no settings on free app.</string>
     <string name="alert_dialog_ok">OK</string>
