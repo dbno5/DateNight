@@ -3,8 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_selector"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
 
     <!--  ListRow Left sied Thumbnail image -->
@@ -12,20 +11,20 @@
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
         android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
         android:background="@drawable/image_bg"
-        android:layout_marginRight="5dip">
+        android:padding="3dip">
 
         <ImageView
             android:id="@+id/picture"
-            android:adjustViewBounds="true"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:adjustViewBounds="true" />
 
     </LinearLayout>
 
-    <!-- Title Of Song-->
+    <!-- Restaurant name -->
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -33,38 +32,45 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
         android:textColor="#040404"
-        android:typeface="sans"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:typeface="sans" />
 
-    <!-- Artist Name -->
+    <!-- Categories -->
     <TextView
         android:id="@+id/categories"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/name"
-        android:textColor="#343434"
         android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail" />
-    <!-- Rightend Duration -->
-    <TextView
-        android:id="@+id/duration"
+        android:layout_toEndOf="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="#343434" />
+
+    <LinearLayout
+        android:id="@+id/stars_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/title"
-        android:gravity="right"
-        android:layout_marginRight="5dip"
-        android:textColor="#10bcc9"
-        android:textStyle="bold" />
+        android:layout_below="@id/categories"
+        android:layout_toEndOf="@id/thumbnail"
+        android:layout_toRightOf="@id/thumbnail"
+        android:gravity="center"
+        android:orientation="horizontal">
 
+        <!--  Stars -->
+        <ImageView
+            android:id="@+id/stars"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            />
 
-    <!--&lt;!&ndash; Rightend Arrow &ndash;&gt;-->
-    <!--<ImageButton-->
-    <!--android:id="@+id/remove_option"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:background="@null"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_alignParentBottom="true"/>-->
+        <!-- Number of Reviews -->
+        <TextView
+            android:id="@+id/reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            />
+    </LinearLayout>
+
 
 </RelativeLayout>

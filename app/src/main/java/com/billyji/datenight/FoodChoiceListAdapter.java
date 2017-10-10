@@ -1,10 +1,10 @@
 package com.billyji.datenight;
 
-import android.animation.Animator;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,8 +32,6 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class FoodChoiceListAdapter extends ArrayAdapter<String>
 {
-    boolean isImageFitToScreen;
-
     private final Activity context;
 
     private final List<Business> fiveRandomBusinesses;
@@ -64,11 +62,21 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
         }
     }
 
+    private void setStars(View rowView, int position)
+    {
+        final ImageView starsPicture = rowView.findViewById(R.id.stars);
+        String numStars = Double.toString(fiveRandomBusinesses.get(position).getRating());
+        String processedNumStars = numStars.replace('.', '_');
+
+        int resourceID = context.getResources().getIdentifier("stars_" + processedNumStars, "drawable", context.getPackageName());
+
+        starsPicture.setImageResource(resourceID);
+    }
+
     private boolean withinParameters(Business business)
     {
         return business.getRating() > FoodSelectionDetails.getMinRating()
             && business.getPrice().length() < Integer.parseInt(FoodSelectionDetails.getMaxPrice());
-
     }
 
     private void update()
@@ -99,6 +107,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
 
         setText(rowView, position);
         setImages(rowView, position);
+        setReviews(rowView, position);
 
         return rowView;
     }
@@ -108,6 +117,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     {
         final ImageView foodPicture = rowView.findViewById(R.id.picture);
 
+        setStars(rowView, position);
         Picasso
             .with(context)
             .load(fiveRandomBusinesses.get(position).getImageUrl())
@@ -142,6 +152,12 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
                 mPopupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
             }
         });
+    }
+
+    private void setReviews(View rowView, int position)
+    {
+        TextView numReviews = rowView.findViewById(R.id.reviews);
+        numReviews.setText(fiveRandomBusinesses.get(position).getReviewCount() + " Reviews");
     }
 
     private void setText(View rowView, int position)
