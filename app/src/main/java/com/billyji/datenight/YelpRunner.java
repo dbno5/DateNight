@@ -1,7 +1,6 @@
 package com.billyji.datenight;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.yelp.fusion.client.connection.YelpFusionApi;
 import com.yelp.fusion.client.connection.YelpFusionApiFactory;
@@ -19,16 +18,14 @@ import retrofit2.Response;
 
 public class YelpRunner
 {
-
-    public static final String WE_FETCHED_DATA = "We fetched data...";
+    public static final String DATA_FETCHED = "Successfully got data";
+    public static final String NO_BUSINESSES_FOUND = "No businesses found";
+    static List<Business> listBusinesses = new ArrayList<>();
+    private Map<String, String> params;
     private final String CLIENT_ID;
     private final String CLIENT_SECRET;
-
     private double latitudeToSearch;
     private double longitudeToSearch;
-
-    static List<Business> listBusinesses = new ArrayList<>();
-
     private boolean usedDefaultLocation = false;
 
     public YelpRunner(double latitudeToSearch, double longitudeToSearch, Context context)
@@ -46,36 +43,14 @@ public class YelpRunner
         try
         {
             YelpFusionApi yelpFusionApi = apiFactory.createAPI(CLIENT_ID, CLIENT_SECRET);
-            Map<String, String> params = new HashMap<>();
 
-            //Our default locations
-            if (latitudeToSearch == 0 && longitudeToSearch == 0)
-            {
-                Log.e(Double.toString(latitudeToSearch), Double.toString(longitudeToSearch));
-                usedDefaultLocation = true;
-                params.put("latitude", "32.7157");
-                params.put("longitude", "-117.071869");
-            }
-            else
-            {
-                params.put("latitude", Double.toString(latitudeToSearch));
-                params.put("longitude", Double.toString(longitudeToSearch));
-
-            }
-
-            //Set some additional parameters
-            params.put("radius", "8500"); //5 miles
-            params.put("limit", "50");
-            params.put("sort_by", "distance");
-            params.put("term", "restaurants");
-
+            setUpParams();
             //Use the API
             Call<SearchResponse> call = yelpFusionApi.getBusinessSearch(params);
             Response<SearchResponse> response = call.execute();
 
             if (response.code() != 200)
             {
-                //We could not get data
                 return "Loading page error-" + response.code();
             }
 
@@ -87,7 +62,39 @@ public class YelpRunner
             return "We had an error:" + e.getMessage();
         }
 
-        return WE_FETCHED_DATA;
+        if(listBusinesses.size() == 0)
+        {
+            return NO_BUSINESSES_FOUND;
+        }
+
+        return DATA_FETCHED;
+    }
+
+    private void setUpParams()
+    {
+        params = new HashMap<>();
+
+        //Use default location if no location provided(San Diego, CA)
+        if (latitudeToSearch == 0 && longitudeToSearch == 0)
+        {
+            usedDefaultLocation = true;
+            params.put("latitude", "32.7157");
+            params.put("longitude", "-117.071869");
+        }
+        else
+        {
+            params.put("latitude", Double.toString(latitudeToSearch));
+            params.put("longitude", Double.toString(longitudeToSearch));
+        }
+
+        //Convert miles to meters
+        String radius = Integer.toString((1609 * FoodSelectionDetails.getMaxDistance()));
+
+        //Set some additional parameters
+        params.put("radius", radius); //5 miles
+        params.put("limit", "50");
+        params.put("sort_by", "distance");
+        params.put("term", "restaurants");
     }
 
     public boolean isUsedDefaultLocation()

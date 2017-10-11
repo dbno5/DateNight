@@ -3,50 +3,147 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/list_selector"
-    android:orientation="horizontal"
-    android:descendantFocusability="blocksDescendants">
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/food_details"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="50dip">
+
+        <!-- Food Picture -->
+        <LinearLayout
+            android:id="@+id/thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginRight="5dip"
+            android:background="@drawable/image_bg"
+            android:padding="3dip">
+
+            <ImageView
+                android:id="@+id/food_picture"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:adjustViewBounds="true" />
+
+        </LinearLayout>
+
+        <!-- Restaurant name -->
+        <TextView
+            android:id="@+id/restaurant_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/thumbnail"
+            android:layout_marginEnd="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="#040404"
+            android:textStyle="bold"
+            android:typeface="sans" />
+
+        <!-- Categories -->
+        <TextView
+            android:id="@+id/categories"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/restaurant_name"
+            android:layout_marginTop="1dip"
+            android:layout_toEndOf="@+id/thumbnail"
+            android:layout_toRightOf="@+id/thumbnail"
+            android:textColor="#343434" />
+
+        <LinearLayout
+            android:id="@+id/stars_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/categories"
+            android:layout_toEndOf="@id/thumbnail"
+            android:layout_toRightOf="@id/thumbnail"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <!--  Stars -->
+            <ImageView
+                android:id="@+id/stars"
+                android:layout_width="100dp"
+                android:layout_height="50dp" />
+
+            <!-- Number of Reviews -->
+            <TextView
+                android:id="@+id/reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!-- Dollar Signs -->
+        <TextView
+            android:id="@+id/dollar_signs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="10dip"
+            />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dollar_signs"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="10dip"
+            />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/number_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <!-- Number -->
-    <TextView
-        android:id="@+id/number"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:typeface="sans"
-        android:textSize="18sp"/>
-
+        android:layout_below="@id/food_details"
+        android:layout_marginTop="20dip">
+        <!-- Number -->
+        <TextView
+            android:id="@+id/phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:typeface="sans" />
     </LinearLayout>
 
     <!-- Artist Name -->
     <TextView
         android:id="@+id/address"
-        android:text="Navigate me!"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/number_layout"
         android:layout_marginTop="20dip"
-        android:textSize="18sp"
-        android:layout_below="@+id/number_layout" />
+        android:text="Navigate me!"
+        android:textSize="18sp" />
 
     <!-- Rightend Duration -->
     <TextView
         android:id="@+id/website_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
         android:layout_below="@+id/address"
-        android:textColor="#10bcc9"
-        />
-
-    <!--&lt;!&ndash; Rightend Arrow &ndash;&gt;-->
-    <!--<ImageButton-->
-    <!--android:id="@+id/remove_option"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:background="@null"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_alignParentBottom="true"/>-->
+        android:layout_marginTop="20dip"
+        android:textColor="#10bcc9" />
 
 </RelativeLayout>

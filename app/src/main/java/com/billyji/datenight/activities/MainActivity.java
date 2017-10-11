@@ -25,7 +25,6 @@ import com.billyji.datenight.LocationGetter;
 
 import android.Manifest;
 
-
 import com.billyji.datenight.R;
 import com.billyji.datenight.YelpRunner;
 
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity
     void findFood()
     {
         setFoodSelectionDetails();
-        if(!checkConnection())
+        if (!checkConnection())
         {
             return;
         }
@@ -136,7 +135,6 @@ public class MainActivity extends AppCompatActivity
             }
             return isConnected;
         }
-
         return false;
     }
 
@@ -158,7 +156,7 @@ public class MainActivity extends AppCompatActivity
             try
             {
                 //Gets the restaurant data using coordinates.
-                yelpRunner = new YelpRunner(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast());
+                yelpRunner = new YelpRunner(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get());
                 dataFromYelp = yelpRunner.getDataFromYelp();
             }
             catch (Exception e)
@@ -184,7 +182,13 @@ public class MainActivity extends AppCompatActivity
                 progressDialog.dismiss();
             }
 
-            if (!result.equals(YelpRunner.WE_FETCHED_DATA))
+            if(result.equals(YelpRunner.NO_BUSINESSES_FOUND))
+            {
+                Toast.makeText(activityReference.get(), "We could not find any businesses nearby you", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (!result.equals(YelpRunner.DATA_FETCHED))
             {
                 Toast.makeText(activityReference.get(), "We could not get data:" + result, Toast.LENGTH_LONG).show();
                 return;
@@ -194,6 +198,7 @@ public class MainActivity extends AppCompatActivity
             {
                 Toast.makeText(activityReference.get(), "Could not get location...default location was used...", Toast.LENGTH_LONG).show();
             }
+
 
             Intent intent = new Intent(activityReference.get(), FoodChoiceActivity.class);
             activityReference.get().startActivity(intent);

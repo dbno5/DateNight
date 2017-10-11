@@ -5,19 +5,10 @@
 
     tools:context="com.billyji.datenight.activities.MainActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:titleTextColor="#ffffff"></android.support.v7.widget.Toolbar>
-
     <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
         android:id="@+id/list"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar" />
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 </RelativeLayout>

@@ -5,8 +5,12 @@
     android:background="@drawable/list_selector"
     android:orientation="horizontal">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="50dip">
 
-    <!--  ListRow Left sied Thumbnail image -->
+    <!-- Food Picture -->
     <LinearLayout
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
@@ -17,7 +21,7 @@
         android:padding="3dip">
 
         <ImageView
-            android:id="@+id/picture"
+            android:id="@+id/food_picture"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:adjustViewBounds="true" />
@@ -26,10 +30,12 @@
 
     <!-- Restaurant name -->
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/restaurant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
+        android:layout_marginEnd="10dip"
+        android:layout_marginRight="10dip"
         android:layout_toRightOf="@+id/thumbnail"
         android:textColor="#040404"
         android:textStyle="bold"
@@ -40,7 +46,7 @@
         android:id="@+id/categories"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
+        android:layout_below="@id/restaurant_name"
         android:layout_marginTop="1dip"
         android:layout_toEndOf="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
@@ -60,17 +66,47 @@
         <ImageView
             android:id="@+id/stars"
             android:layout_width="100dp"
-            android:layout_height="50dp"
-            />
+            android:layout_height="50dp" />
 
         <!-- Number of Reviews -->
         <TextView
             android:id="@+id/reviews"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            />
+            android:layout_marginLeft="10dip" />
+
     </LinearLayout>
 
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- Dollar Signs -->
+    <TextView
+        android:id="@+id/dollar_signs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:layout_marginRight="10dip"
+        />
+
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dollar_signs"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="10dip"
+            />
+
+    </RelativeLayout>
 </RelativeLayout>

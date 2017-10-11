@@ -2,51 +2,37 @@ package com.billyji.datenight;
 
 public class FoodSelectionDetails
 {
+    private static int m_maxDistance;
+    private static double m_minStars;
+    private static String m_maxPrice;
 
-    private static double maxDistance;
-    private static double minStars;
-    private static String maxPrice;
-    private static double minRating;
-
-    public static String getMaxPrice()
+    public static void setMaxPrice(String price)
     {
-        return maxPrice;
-    }
-
-    public static void setMaxPrice(String maxPrice)
-    {
-        FoodSelectionDetails.maxPrice = maxPrice;
-    }
-
-    public static double getMinRating()
-    {
-        return minRating;
-    }
-
-    public static void setMinRating(double minRating)
-    {
-        FoodSelectionDetails.minRating = minRating;
-    }
-
-    public static double getMaxDistance()
-    {
-        return maxDistance;
-    }
-
-    public static double getMinStars()
-    {
-        return minStars;
-    }
-
-    public static void setMinStars(double stars)
-    {
-        minStars = stars;
+        m_maxPrice = Double.parseDouble(price) >= 5 ? "4.5" : price;
     }
 
     public static void setMaxDistance(double distance)
     {
-        maxDistance = distance;
+        m_maxDistance = distance > 20 ? 20 : (int)distance;
     }
 
+    public static void setMinStars(double stars)
+    {
+        m_minStars = stars >= 5 ? 4.5 : stars;
+    }
 
+    static String getMaxPrice()
+    {
+        return m_maxPrice;
+    }
+
+    static int getMaxDistance()
+    {
+        return m_maxDistance;
+    }
+
+    static double getMinStars()
+    {
+        return m_minStars;
+    }
 }

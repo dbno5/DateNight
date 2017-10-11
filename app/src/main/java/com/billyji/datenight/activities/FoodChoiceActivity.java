@@ -3,26 +3,15 @@ package com.billyji.datenight.activities;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.PopupWindow;
-import android.widget.Toast;
 
-import com.billyji.datenight.FinalFoodChoiceListAdapter;
 import com.billyji.datenight.FoodChoiceListAdapter;
 import com.billyji.datenight.R;
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
 import com.nhaarman.listviewanimations.itemmanipulation.swipedismiss.OnDismissCallback;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,14 +22,11 @@ import butterknife.ButterKnife;
 
 public class FoodChoiceActivity extends AppCompatActivity
 {
-    public static List<String> restaurantReference;
-    private FoodChoiceListAdapter adapter;
-    private FinalFoodChoiceListAdapter adapterTwo;
-
     @BindView(R.id.list)
     DynamicListView list;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+
+    public static List<String> restaurantReference;
+    private FoodChoiceListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -50,9 +36,7 @@ public class FoodChoiceActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setUpListAdapter();
-        setSupportActionBar(toolbar);
-        Toast.makeText(this, "Swipe away two options!", Toast.LENGTH_SHORT)
-            .show();
+        setToolbarTitle("Remove two");
     }
 
     @Override
@@ -60,6 +44,11 @@ public class FoodChoiceActivity extends AppCompatActivity
     {
         getMenuInflater().inflate(R.menu.menu_options, menu);
         return true;
+    }
+
+    public void setToolbarTitle(String title)
+    {
+        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -70,6 +59,8 @@ public class FoodChoiceActivity extends AppCompatActivity
             case R.id.action_refresh:
                 setUpListAdapter();
                 break;
+            case android.R.id.home:
+                finish();
             default:
                 break;
         }
@@ -79,12 +70,12 @@ public class FoodChoiceActivity extends AppCompatActivity
 
     public void expandItem()
     {
-        restaurantReference = new ArrayList<>(Arrays.asList("x", "x"));
-        adapterTwo = new FinalFoodChoiceListAdapter(this, restaurantReference, adapter.getFiveRandomBusinesses().get(0));
-        SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapterTwo);
+        adapter.setOnlyOneBusiness(true);
+        SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
 
         animationAdapter.setAbsListView(list);
         list.setAdapter(animationAdapter);
+        list.disableSwipeToDismiss();
     }
 
     private void setUpListAdapter()
@@ -95,12 +86,6 @@ public class FoodChoiceActivity extends AppCompatActivity
 
         animationAdapter.setAbsListView(list);
         list.setAdapter(animationAdapter);
-    }
-
-    @Override
-    protected void onStart()
-    {
-        super.onStart();
         list.enableSwipeToDismiss(
             new OnDismissCallback()
             {
@@ -114,18 +99,6 @@ public class FoodChoiceActivity extends AppCompatActivity
                 }
             }
         );
-
-        list.setOnItemClickListener(new OnItemClickListener()
-        {
-            @Override
-            public void onItemClick(
-                AdapterView<?> parent, View view,
-                int position, long id)
-            {
-
-
-            }
-        });
     }
 }
 

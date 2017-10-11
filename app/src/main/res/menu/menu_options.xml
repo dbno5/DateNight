@@ -3,9 +3,9 @@
 
     <item
         android:id="@+id/action_refresh"
-        android:orderInCategory="100"
-        app:showAsAction="always"
         android:icon="@drawable/dice"
-        android:title="Refresh" />
+        android:orderInCategory="100"
+        android:title="Refresh"
+        app:showAsAction="always" />
 
 </menu>

@@ -4,140 +4,194 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.billyji.datenight.activities.FoodChoiceActivity;
 import com.squareup.picasso.Picasso;
 import com.yelp.fusion.client.models.Business;
 import com.yelp.fusion.client.models.Category;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Locale;
 
-import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class FoodChoiceListAdapter extends ArrayAdapter<String>
 {
-    private final Activity context;
+    @BindView(R.id.stars)
+    ImageView m_numStars;
+    @BindView(R.id.food_picture)
+    ImageView m_foodPicture;
+    @BindView(R.id.reviews)
+    TextView m_reviews;
+    @BindView(R.id.restaurant_name)
+    TextView m_restaurantName;
+    @BindView(R.id.categories)
+    TextView m_restaurantCategories;
+    @BindView(R.id.dollar_signs)
+    TextView m_dollarSigns;
+    @BindView(R.id.distance)
+    TextView m_distance;
+    @BindView(R.id.phone_number)
+    @Nullable
+    TextView m_phoneNumber;
+    @BindView(R.id.address)
+    @Nullable
+    TextView m_address;
+    @BindView(R.id.website_link)
+    @Nullable
+    TextView m_website;
 
-    private final List<Business> fiveRandomBusinesses;
+    private final Activity context;
+    private final YelpBusinessModel m_businessModel = new YelpBusinessModel(YelpRunner.listBusinesses);
+    private Business m_curBusiness;
+    private boolean m_onlyOneBusiness;
 
     public FoodChoiceListAdapter(Activity context, List<String> listSizeReference)
     {
         super(context, R.layout.food_list, listSizeReference);
 
         this.context = context;
-        this.fiveRandomBusinesses = new ArrayList<>();
-        getFiveBusinesses();
-
-    }
-
-    private void getFiveBusinesses()
-    {
-        Random r = new Random();
-
-        while (fiveRandomBusinesses.size() < 5 && YelpRunner.listBusinesses.size() > 0)
-        {
-            int randomBusiness = r.nextInt(YelpRunner.listBusinesses.size());
-            Business curBusiness = YelpRunner.listBusinesses.get(randomBusiness);
-
-            if (withinParameters(curBusiness) && !fiveRandomBusinesses.contains(curBusiness))
-            {
-                addBusiness(curBusiness);
-            }
-        }
-    }
-
-    private void setStars(View rowView, int position)
-    {
-        final ImageView starsPicture = rowView.findViewById(R.id.stars);
-        String numStars = Double.toString(fiveRandomBusinesses.get(position).getRating());
-        String processedNumStars = numStars.replace('.', '_');
-
-        int resourceID = context.getResources().getIdentifier("stars_" + processedNumStars, "drawable", context.getPackageName());
-
-        starsPicture.setImageResource(resourceID);
-    }
-
-    private boolean withinParameters(Business business)
-    {
-        return business.getRating() > FoodSelectionDetails.getMinRating()
-            && business.getPrice().length() < Integer.parseInt(FoodSelectionDetails.getMaxPrice());
-    }
-
-    private void update()
-    {
-        switch (FoodChoiceActivity.restaurantReference.size())
-        {
-            case 1:
-                Toast.makeText(context, "Congratulations!", Toast.LENGTH_SHORT)
-                    .show();
-                ((FoodChoiceActivity) context).expandItem();
-                break;
-            case 3:
-                Toast.makeText(context, "Remove two more!", Toast.LENGTH_SHORT)
-                    .show();
-                break;
-            default:
-                break;
-        }
+        m_businessModel.getFiveBusinesses();
     }
 
     @Override
     public @NonNull
     View getView(int position, View view, @NonNull ViewGroup parent)
     {
-        LayoutInflater inflater = context.getLayoutInflater();
-        //No need for ViewHolder pattern here as scrolling never occurs
-        View rowView = inflater.inflate(R.layout.food_list, parent, false);
+        View rowView;
 
-        setText(rowView, position);
-        setImages(rowView, position);
-        setReviews(rowView, position);
+        //No need for ViewHolder pattern here as scrolling never occurs
+        if(m_onlyOneBusiness)
+        {
+            rowView = LayoutInflater.from(context).inflate(R.layout.selected_food_detail, null);
+        }
+        else
+        {
+            rowView = LayoutInflater.from(context).inflate(R.layout.food_list, null);
+        }
+
+        ButterKnife.bind(this, rowView);
+
+        m_curBusiness = m_businessModel.getBusinesses().get(position);
+        setUpView(position);
+
+        if(m_address != null && m_phoneNumber != null && m_website != null)
+        {
+            setAdditionalRestaurantDetails();
+        }
 
         return rowView;
     }
 
-
-    private void setImages(final View rowView, final int position)
+    private void setUpView(int position)
     {
-        final ImageView foodPicture = rowView.findViewById(R.id.picture);
+        setText();
+        setStars();
+        setFoodPicture(position);
+    }
 
-        setStars(rowView, position);
+    private void setStars()
+    {
+        String numStars = Double.toString(m_curBusiness.getRating());
+        String processedNumStars = numStars.replace('.', '_');
+
+        int resourceID = context.getResources().getIdentifier("stars_" + processedNumStars, "drawable", context.getPackageName());
+
+        m_numStars.setImageResource(resourceID);
+    }
+
+    private void update()
+    {
+        switch (m_businessModel.getBusinessListSize())
+        {
+            case 1:
+                ((FoodChoiceActivity) context).setToolbarTitle("Congratulations!");
+                ((FoodChoiceActivity) context).expandItem();
+                break;
+            case 3:
+                ((FoodChoiceActivity) context).setToolbarTitle("Remove two more");
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setAdditionalRestaurantDetails()
+    {
+        m_phoneNumber.setText(m_curBusiness.getDisplayPhone());
+        m_phoneNumber.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + m_curBusiness.getDisplayPhone()));
+                context.startActivity(intent);
+            }
+        });
+
+        m_address.setOnClickListener(new OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + m_curBusiness.getName());
+
+                //String uri = "http://maps.google.com/maps?daddr=" + business.getCoordinates().getLatitude() + "," + business.getCoordinates()
+                // .getLongitude() + " (" + "Where the food is at" + ")";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                context.startActivity(intent);
+            }
+        });
+
+        m_website.setClickable(true);
+        m_website.setMovementMethod(LinkMovementMethod.getInstance());
+        String text = "<a href='" + m_curBusiness.getUrl() + "'>" + "Check out " + m_curBusiness.getName() + " on Yelp" + "</a>";
+        m_website.setText(Html.fromHtml(text));
+    }
+
+    private void setFoodPicture(int position)
+    {
         Picasso
             .with(context)
-            .load(fiveRandomBusinesses.get(position).getImageUrl())
-            .fit()
-            .into(foodPicture);
+            .load(m_curBusiness.getImageUrl())
+            .resize(100, 100)
+            .centerCrop()
+            .into(m_foodPicture);
 
-        final LayoutInflater inflater = context.getLayoutInflater();
-        final View customView = inflater.inflate(R.layout.popup_dialog, null);
-        final ImageView tits = customView.findViewById(R.id.tv);
+        setListenerForLargePicture(position);
+    }
 
-        foodPicture.setOnClickListener(new View.OnClickListener()
+    private void setListenerForLargePicture(final int position)
+    {
+        final View customView = LayoutInflater.from(context).inflate(R.layout.popup_dialog, null);
+        final ImageView popupDialog = customView.findViewById(R.id.tv);
+
+        m_foodPicture.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
                 Picasso
                     .with(context)
-                    .load(fiveRandomBusinesses.get(position).getImageUrl())
-                    .fit()
-                    .into(tits);
+                    .load(m_businessModel.getBusinesses().get(position).getImageUrl())
+                    .resize(400, 400)
+                    .centerCrop()
+                    .into(popupDialog);
 
                 // Initialize a new instance of popup window
                 PopupWindow mPopupWindow = new PopupWindow(
@@ -154,50 +208,67 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
         });
     }
 
-    private void setReviews(View rowView, int position)
+    private void setReviews()
     {
-        TextView numReviews = rowView.findViewById(R.id.reviews);
-        numReviews.setText(fiveRandomBusinesses.get(position).getReviewCount() + " Reviews");
+        String numReview = m_curBusiness.getReviewCount() + " Reviews";
+        m_reviews.setText(numReview);
     }
 
-    private void setText(View rowView, int position)
+    private void setText()
     {
-        TextView restaurantName = rowView.findViewById(R.id.name);
-        restaurantName.setText(fiveRandomBusinesses.get(position).getName());
+        setRestaurantName();
+        setRestaurantCategories();
+        setReviews();
+        setDollarSigns();
+        setDistance();
+    }
 
-        TextView restaurantCategories = rowView.findViewById(R.id.categories);
+    private void setRestaurantName()
+    {
+        m_restaurantName.setText(m_curBusiness.getName());
+    }
 
+    private void setRestaurantCategories()
+    {
         StringBuilder allCategories = new StringBuilder();
-        for (Category category : fiveRandomBusinesses.get(position).getCategories())
+        for (Category category : m_curBusiness.getCategories())
         {
             allCategories.append(category.getTitle());
             allCategories.append(", ");
         }
         allCategories.deleteCharAt(allCategories.length() - 2);
 
-        restaurantCategories.setText(allCategories);
+        m_restaurantCategories.setText(allCategories);
     }
 
-    private void addBusiness(Business business)
+    private void setDollarSigns()
     {
-        fiveRandomBusinesses.add(business);
+        StringBuilder dollarSigns = new StringBuilder();
+        for(int i = 0; i < m_curBusiness.getPrice().length(); i++)
+        {
+            dollarSigns.append('$');
+        }
+
+        m_dollarSigns.setText(dollarSigns);
+    }
+
+    private void setDistance()
+    {
+        m_distance.setText(m_businessModel.getDistance(m_curBusiness));
     }
 
     public void removeBusiness(int position)
     {
-        if (fiveRandomBusinesses.size() == 1)
-        { return; }
-
-        fiveRandomBusinesses.remove(position);
-        FoodChoiceActivity.restaurantReference.remove(0);
-        update();
-        notifyDataSetChanged();
+        if(m_businessModel.removeBusiness(position))
+        {
+            FoodChoiceActivity.restaurantReference.remove(0);
+            update();
+            notifyDataSetChanged();
+        }
     }
 
-    public List<Business> getFiveRandomBusinesses()
+    public void setOnlyOneBusiness(boolean exist)
     {
-        return fiveRandomBusinesses;
+        m_onlyOneBusiness = exist;
     }
-
-
 }

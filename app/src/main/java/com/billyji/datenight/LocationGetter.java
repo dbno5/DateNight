@@ -3,33 +3,23 @@ package com.billyji.datenight;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Address;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.util.List;
 
 public class LocationGetter
 {
 
-    private static LocationListener locationListener;
-    private static LocationManager locationManager;
-
-
-    private static final int MAX_NUMBER_OF_ADDRESS = 5;
-
     private static final String PERMISSION_MESSAGE = "Location permission needs to be granted to use this app. You can go into Device " +
         "settings->App->This app-> and Permissions";
-
+    private static LocationListener locationListener;
+    private static LocationManager locationManager;
     private static double latitudeLast;
     private static double longitudeLast;
-
 
     public static void getLocation(Context context)
     {
@@ -61,31 +51,29 @@ public class LocationGetter
             Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
             if (lastKnownLocation != null)
             {
-                double latitude = lastKnownLocation.getLatitude();
-                double longitude = lastKnownLocation.getLongitude();
-
-                List<Address> listOfAddresses = AppUtility.getAddressesFromGeoCoder(context, latitude, longitude, MAX_NUMBER_OF_ADDRESS);
-
-                if (!listOfAddresses.isEmpty())
-                {
-                    //We just want to get the first latitude and longitude
-                    latitudeLast = latitude;
-                    longitudeLast = longitude;
-                }
+                latitudeLast = lastKnownLocation.getLatitude();
+                longitudeLast = lastKnownLocation.getLongitude();
             }
         }
     }
-
 
     private static void stopUpdateRequest()
     {
         locationManager.removeUpdates(locationListener);
     }
 
+    public static double getLatitudeLast()
+    {
+        return latitudeLast;
+    }
+
+    public static double getLongitudeLast()
+    {
+        return longitudeLast;
+    }
 
     private static class LocationListenerCustom implements LocationListener
     {
-
         final Context context;
 
         LocationListenerCustom(Context context)
@@ -105,7 +93,6 @@ public class LocationGetter
         {
             stopUpdateRequest();
         }
-
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras)
@@ -136,16 +123,5 @@ public class LocationGetter
         {
         }
     }
-
-    public static double getLatitudeLast()
-    {
-        return latitudeLast;
-    }
-
-    public static double getLongitudeLast()
-    {
-        return longitudeLast;
-    }
-
 }
 
