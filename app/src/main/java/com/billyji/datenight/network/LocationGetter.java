@@ -1,4 +1,4 @@
-package com.billyji.datenight;
+package com.billyji.datenight.network;
 
 import android.Manifest;
 import android.content.Context;

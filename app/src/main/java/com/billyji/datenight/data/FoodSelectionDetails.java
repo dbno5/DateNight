@@ -1,4 +1,4 @@
-package com.billyji.datenight;
+package com.billyji.datenight.data;
 
 public class FoodSelectionDetails
 {
@@ -21,14 +21,14 @@ public class FoodSelectionDetails
         m_minStars = stars >= 5 ? 4.5 : stars;
     }
 
+    public static int getMaxDistance()
+    {
+        return m_maxDistance;
+    }
+
     static String getMaxPrice()
     {
         return m_maxPrice;
-    }
-
-    static int getMaxDistance()
-    {
-        return m_maxDistance;
     }
 
     static double getMinStars()

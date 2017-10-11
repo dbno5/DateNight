@@ -1,7 +1,9 @@
-package com.billyji.datenight;
+package com.billyji.datenight.network;
 
 import android.content.Context;
 
+import com.billyji.datenight.data.FoodSelectionDetails;
+import com.billyji.datenight.R;
 import com.yelp.fusion.client.connection.YelpFusionApi;
 import com.yelp.fusion.client.connection.YelpFusionApiFactory;
 import com.yelp.fusion.client.models.Business;
@@ -20,7 +22,7 @@ public class YelpRunner
 {
     public static final String DATA_FETCHED = "Successfully got data";
     public static final String NO_BUSINESSES_FOUND = "No businesses found";
-    static List<Business> listBusinesses = new ArrayList<>();
+    public static List<Business> listBusinesses = new ArrayList<>();
     private Map<String, String> params;
     private final String CLIENT_ID;
     private final String CLIENT_SECRET;

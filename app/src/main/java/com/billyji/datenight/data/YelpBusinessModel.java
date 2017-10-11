@@ -1,20 +1,21 @@
-package com.billyji.datenight;
+package com.billyji.datenight.data;
 
 import android.location.Location;
 
+import com.billyji.datenight.network.LocationGetter;
 import com.yelp.fusion.client.models.Business;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-class YelpBusinessModel
+public class YelpBusinessModel
 {
     private List<Business> m_fiveRandomBusinesses;
     private List<Business> m_allBusinesses;
     private Location m_userLocation;
 
-    YelpBusinessModel(List<Business> allBusinesses)
+    public YelpBusinessModel(List<Business> allBusinesses)
     {
         this.m_allBusinesses = allBusinesses;
         m_userLocation = new Location("User Location");
@@ -23,7 +24,7 @@ class YelpBusinessModel
         m_userLocation.setLongitude(LocationGetter.getLongitudeLast());
     }
 
-    void getFiveBusinesses()
+    public void getFiveBusinesses()
     {
         m_fiveRandomBusinesses = new ArrayList<>();
         Random r = new Random();
@@ -56,17 +57,17 @@ class YelpBusinessModel
         m_fiveRandomBusinesses.add(business);
     }
 
-    int getBusinessListSize()
+    public int getBusinessListSize()
     {
         return m_fiveRandomBusinesses.size();
     }
 
-    List<Business> getBusinesses()
+    public List<Business> getBusinesses()
     {
         return m_fiveRandomBusinesses;
     }
 
-    boolean removeBusiness(int position)
+    public boolean removeBusiness(int position)
     {
         if (m_fiveRandomBusinesses.size() == 1 || position >= m_fiveRandomBusinesses.size())
         {
@@ -77,7 +78,7 @@ class YelpBusinessModel
         return true;
     }
 
-    String getDistance(Business business)
+    public String getDistance(Business business)
     {
         Location restaurantLocation = new Location("Restaurant Location");
 

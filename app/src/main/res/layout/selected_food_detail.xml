@@ -10,15 +10,19 @@
         android:id="@+id/food_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="50dip">
+        android:layout_marginRight="50dip"
+        android:layout_marginEnd="5dip"
+        >
 
         <!-- Food Picture -->
         <LinearLayout
             android:id="@+id/thumbnail"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_marginRight="5dip"
+            android:layout_marginEnd="5dip"
             android:background="@drawable/image_bg"
             android:padding="3dip">
 
@@ -39,6 +43,7 @@
             android:layout_marginEnd="10dip"
             android:layout_marginRight="10dip"
             android:layout_toRightOf="@+id/thumbnail"
+            android:layout_toEndOf="@+id/thumbnail"
             android:textColor="#040404"
             android:textStyle="bold"
             android:typeface="sans" />
@@ -75,11 +80,11 @@
                 android:id="@+id/reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip" />
+                android:layout_marginLeft="10dip"
+                android:layout_marginStart="10dip"
+                />
 
         </LinearLayout>
-
-
     </RelativeLayout>
 
     <RelativeLayout
@@ -96,6 +101,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitEnd"
             android:layout_marginRight="10dip"
+            android:layout_marginEnd="10dip"
             />
 
         <TextView
@@ -108,6 +114,7 @@
             android:adjustViewBounds="true"
             android:scaleType="fitEnd"
             android:layout_marginRight="10dip"
+            android:layout_marginEnd="10dip"
             />
 
     </RelativeLayout>
@@ -134,7 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/number_layout"
         android:layout_marginTop="20dip"
-        android:text="Navigate me!"
+        android:text="@string/navigate_me"
         android:textSize="18sp" />
 
     <!-- Rightend Duration -->

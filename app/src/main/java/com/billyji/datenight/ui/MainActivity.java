@@ -1,5 +1,6 @@
-package com.billyji.datenight.activities;
+package com.billyji.datenight.ui;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,25 +12,21 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-
 import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import butterknife.ButterKnife;
-import butterknife.BindView;
-import butterknife.OnClick;
-
-import com.billyji.datenight.FoodSelectionDetails;
-import com.billyji.datenight.LocationGetter;
-
-import android.Manifest;
-
 import com.billyji.datenight.R;
-import com.billyji.datenight.YelpRunner;
+import com.billyji.datenight.data.FoodSelectionDetails;
+import com.billyji.datenight.network.LocationGetter;
+import com.billyji.datenight.network.YelpRunner;
 
 import java.lang.ref.WeakReference;
 import java.net.URL;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -198,7 +195,6 @@ public class MainActivity extends AppCompatActivity
             {
                 Toast.makeText(activityReference.get(), "Could not get location...default location was used...", Toast.LENGTH_LONG).show();
             }
-
 
             Intent intent = new Intent(activityReference.get(), FoodChoiceActivity.class);
             activityReference.get().startActivity(intent);

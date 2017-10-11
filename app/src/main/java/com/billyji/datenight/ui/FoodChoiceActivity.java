@@ -1,4 +1,4 @@
-package com.billyji.datenight.activities;
+package com.billyji.datenight.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 
-import com.billyji.datenight.FoodChoiceListAdapter;
 import com.billyji.datenight.R;
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter;
 import com.nhaarman.listviewanimations.itemmanipulation.DynamicListView;
@@ -25,7 +24,7 @@ public class FoodChoiceActivity extends AppCompatActivity
     @BindView(R.id.list)
     DynamicListView list;
 
-    public static List<String> restaurantReference;
+    private List<String> restaurantReference;
     private FoodChoiceListAdapter adapter;
 
     @Override
@@ -36,7 +35,7 @@ public class FoodChoiceActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setUpListAdapter();
-        setToolbarTitle("Remove two");
+        setToolbarTitle("Swipe away two options");
     }
 
     @Override
@@ -44,11 +43,6 @@ public class FoodChoiceActivity extends AppCompatActivity
     {
         getMenuInflater().inflate(R.menu.menu_options, menu);
         return true;
-    }
-
-    public void setToolbarTitle(String title)
-    {
-        getSupportActionBar().setTitle(title);
     }
 
     @Override
@@ -68,6 +62,11 @@ public class FoodChoiceActivity extends AppCompatActivity
         return true;
     }
 
+    public void setToolbarTitle(String title)
+    {
+        getSupportActionBar().setTitle(title);
+    }
+
     public void expandItem()
     {
         adapter.setOnlyOneBusiness(true);
@@ -76,6 +75,23 @@ public class FoodChoiceActivity extends AppCompatActivity
         animationAdapter.setAbsListView(list);
         list.setAdapter(animationAdapter);
         list.disableSwipeToDismiss();
+    }
+
+    public void update(int businessListSize)
+    {
+        removeReference();
+        switch (businessListSize)
+        {
+            case 1:
+                setToolbarTitle("Congratulations!");
+                expandItem();
+                break;
+            case 3:
+                setToolbarTitle("Remove two more");
+                break;
+            default:
+                break;
+        }
     }
 
     private void setUpListAdapter()
@@ -99,6 +115,11 @@ public class FoodChoiceActivity extends AppCompatActivity
                 }
             }
         );
+    }
+
+    private void removeReference()
+    {
+        restaurantReference.remove(0);
     }
 }
 
