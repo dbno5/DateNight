@@ -21,11 +21,11 @@ import butterknife.ButterKnife;
 
 public class FoodChoiceActivity extends AppCompatActivity
 {
-    @BindView(R.id.list)
-    DynamicListView list;
+    @BindView(R.id.all_food_list)
+    DynamicListView m_foodList;
 
-    private List<String> restaurantReference;
-    private FoodChoiceListAdapter adapter;
+    private List<String> m_restaurantReference;
+    private FoodChoiceListAdapter m_foodListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -35,7 +35,7 @@ public class FoodChoiceActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setUpListAdapter();
-        setToolbarTitle("Swipe away two options");
+        setToolbarTitle(getString(R.string.swipe_two));
     }
 
     @Override
@@ -62,19 +62,22 @@ public class FoodChoiceActivity extends AppCompatActivity
         return true;
     }
 
-    public void setToolbarTitle(String title)
+    private void setToolbarTitle(String title)
     {
-        getSupportActionBar().setTitle(title);
+        if(getSupportActionBar() != null)
+        {
+            getSupportActionBar().setTitle(title);
+        }
     }
 
-    public void expandItem()
+    private void expandItem()
     {
-        adapter.setOnlyOneBusiness(true);
-        SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
+        m_foodListAdapter.setOnlyOneBusiness();
+        SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(m_foodListAdapter);
 
-        animationAdapter.setAbsListView(list);
-        list.setAdapter(animationAdapter);
-        list.disableSwipeToDismiss();
+        animationAdapter.setAbsListView(m_foodList);
+        m_foodList.setAdapter(animationAdapter);
+        m_foodList.disableSwipeToDismiss();
     }
 
     public void update(int businessListSize)
@@ -83,11 +86,11 @@ public class FoodChoiceActivity extends AppCompatActivity
         switch (businessListSize)
         {
             case 1:
-                setToolbarTitle("Congratulations!");
+                setToolbarTitle(getString(R.string.finished_picking));
                 expandItem();
                 break;
             case 3:
-                setToolbarTitle("Remove two more");
+                setToolbarTitle(getString(R.string.remove_two_more));
                 break;
             default:
                 break;
@@ -96,13 +99,13 @@ public class FoodChoiceActivity extends AppCompatActivity
 
     private void setUpListAdapter()
     {
-        restaurantReference = new ArrayList<>(Arrays.asList("x", "x", "x", "x", "x"));
-        adapter = new FoodChoiceListAdapter(this, restaurantReference);
-        SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(adapter);
+        m_restaurantReference = new ArrayList<>(Arrays.asList("x", "x", "x", "x", "x"));
+        m_foodListAdapter = new FoodChoiceListAdapter(this, m_restaurantReference);
+        SwingLeftInAnimationAdapter animationAdapter = new SwingLeftInAnimationAdapter(m_foodListAdapter);
 
-        animationAdapter.setAbsListView(list);
-        list.setAdapter(animationAdapter);
-        list.enableSwipeToDismiss(
+        animationAdapter.setAbsListView(m_foodList);
+        m_foodList.setAdapter(animationAdapter);
+        m_foodList.enableSwipeToDismiss(
             new OnDismissCallback()
             {
                 @Override
@@ -110,7 +113,7 @@ public class FoodChoiceActivity extends AppCompatActivity
                 {
                     for (int position : reverseSortedPositions)
                     {
-                        adapter.removeBusiness(position);
+                        m_foodListAdapter.removeBusiness(position);
                     }
                 }
             }
@@ -119,7 +122,7 @@ public class FoodChoiceActivity extends AppCompatActivity
 
     private void removeReference()
     {
-        restaurantReference.remove(0);
+        m_restaurantReference.remove(0);
     }
 }
 

@@ -7,18 +7,16 @@
     android:orientation="horizontal">
 
     <RelativeLayout
-        android:id="@+id/food_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="50dip"
-        android:layout_marginEnd="5dip"
+        android:id="@+id/food_details"
         >
 
         <!-- Food Picture -->
         <LinearLayout
             android:id="@+id/thumbnail"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginRight="5dip"
@@ -30,7 +28,8 @@
                 android:id="@+id/food_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:adjustViewBounds="true" />
+                android:adjustViewBounds="true"
+                android:contentDescription="@null"/>
 
         </LinearLayout>
 
@@ -40,13 +39,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/thumbnail"
-            android:layout_marginEnd="10dip"
-            android:layout_marginRight="10dip"
             android:layout_toRightOf="@+id/thumbnail"
             android:layout_toEndOf="@+id/thumbnail"
             android:textColor="#040404"
             android:textStyle="bold"
-            android:typeface="sans" />
+            android:typeface="sans"
+            android:layout_marginRight="50dip"
+            android:layout_marginEnd="50dip"/>
 
         <!-- Categories -->
         <TextView
@@ -57,23 +56,26 @@
             android:layout_marginTop="1dip"
             android:layout_toEndOf="@+id/thumbnail"
             android:layout_toRightOf="@+id/thumbnail"
-            android:textColor="#343434" />
+            android:textColor="#343434"
+            android:layout_marginRight="50dip"
+            android:layout_marginEnd="50dip"/>
 
         <LinearLayout
             android:id="@+id/stars_layout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/categories"
             android:layout_toEndOf="@id/thumbnail"
             android:layout_toRightOf="@id/thumbnail"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <!--  Stars -->
             <ImageView
                 android:id="@+id/stars"
                 android:layout_width="100dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                android:contentDescription="@null"/>
 
             <!-- Number of Reviews -->
             <TextView
@@ -81,10 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:layout_marginStart="10dip"
-                />
-
+                android:layout_marginStart="10dip"/>
         </LinearLayout>
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -122,19 +123,20 @@
     <LinearLayout
         android:id="@+id/number_layout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/food_details"
         android:layout_marginTop="20dip">
-        <!-- Number -->
+        <!-- Phone Number -->
         <TextView
             android:id="@+id/phone_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#10bcc9"
             android:textSize="18sp"
             android:typeface="sans" />
     </LinearLayout>
 
-    <!-- Artist Name -->
+    <!-- Address -->
     <TextView
         android:id="@+id/address"
         android:layout_width="wrap_content"
@@ -142,15 +144,17 @@
         android:layout_below="@+id/number_layout"
         android:layout_marginTop="20dip"
         android:text="@string/navigate_me"
+        android:textColor="#10bcc9"
         android:textSize="18sp" />
 
-    <!-- Rightend Duration -->
+    <!-- Website -->
     <TextView
         android:id="@+id/website_link"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/address"
         android:layout_marginTop="20dip"
-        android:textColor="#10bcc9" />
+        android:textColor="#10bcc9"
+        android:textSize="18sp"/>
 
 </RelativeLayout>

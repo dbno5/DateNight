@@ -23,4 +23,13 @@
     <string name="request_location"><![CDATA[Location permission should to be granted to use this app. Otherwise we can only use with a default location. You can go into Device settings->App->This app-> and Permissions to allow location requests.]]></string>
     <string name="permission_request_title">Permission Request</string>
     <string name="location_not_enabled_dialog_message">Location is not enabled. If location isn\'t turned on, the default location or last known location will be used for demo.</string>
+    <string name="no_network_connection">There is no network connection.</string>
+    <string name="no_businesses_found">We could not find any businesses nearby you</string>
+    <string name="no_data_received">We could not get data:</string>
+    <string name="using_default_location">Could not get location...searching in San Diego...</string>
+    <string name="finding_food_notification">Finding you some eats…</string>
+    <string name="netflix_construction">Netflix portion under construction</string>
+    <string name="finished_picking">Congratulations!</string>
+    <string name="remove_two_more">Remove two more</string>
+    <string name="swipe_two">Swipe away two options</string>
 </resources>

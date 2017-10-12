@@ -7,15 +7,16 @@ import com.yelp.fusion.client.models.Business;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
-public class YelpBusinessModel
+public class YelpDataModel
 {
     private List<Business> m_fiveRandomBusinesses;
-    private List<Business> m_allBusinesses;
-    private Location m_userLocation;
+    private final List<Business> m_allBusinesses;
+    private final Location m_userLocation;
 
-    public YelpBusinessModel(List<Business> allBusinesses)
+    public YelpDataModel(List<Business> allBusinesses)
     {
         this.m_allBusinesses = allBusinesses;
         m_userLocation = new Location("User Location");
@@ -48,8 +49,8 @@ public class YelpBusinessModel
 
     private boolean withinParameters(Business business)
     {
-        return business.getRating() >= FoodSelectionDetails.getMinStars()
-            && business.getPrice().length() <= Double.parseDouble(FoodSelectionDetails.getMaxPrice());
+        return business.getRating() >= FoodSelectionDataModel.getMinStars()
+            && business.getPrice().length() <= Double.parseDouble(FoodSelectionDataModel.getMaxPrice());
     }
 
     private void addBusiness(Business business)
@@ -92,6 +93,6 @@ public class YelpBusinessModel
     private String processDistance(float distance)
     {
         distance = distance / 1609;
-        return String.format("%.1f", distance) + " mi";
+        return String.format(Locale.US, "%.1f", distance) + " mi";
     }
 }

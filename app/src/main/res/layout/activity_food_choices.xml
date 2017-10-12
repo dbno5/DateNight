@@ -1,14 +1,7 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
+    android:id="@+id/all_food_list"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    tools:context="com.billyji.datenight.activities.MainActivity">
-
-    <com.nhaarman.listviewanimations.itemmanipulation.DynamicListView
-        android:id="@+id/list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp" />
-</RelativeLayout>
+    android:paddingLeft="5dp"
+    android:paddingRight="5dp" />

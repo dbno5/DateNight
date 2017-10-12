@@ -2,7 +2,7 @@ package com.billyji.datenight.network;
 
 import android.content.Context;
 
-import com.billyji.datenight.data.FoodSelectionDetails;
+import com.billyji.datenight.data.FoodSelectionDataModel;
 import com.billyji.datenight.R;
 import com.yelp.fusion.client.connection.YelpFusionApi;
 import com.yelp.fusion.client.connection.YelpFusionApiFactory;
@@ -18,22 +18,24 @@ import java.util.Map;
 import retrofit2.Call;
 import retrofit2.Response;
 
-public class YelpRunner
+public class YelpDataGetter
 {
     public static final String DATA_FETCHED = "Successfully got data";
     public static final String NO_BUSINESSES_FOUND = "No businesses found";
-    public static List<Business> listBusinesses = new ArrayList<>();
-    private Map<String, String> params;
     private final String CLIENT_ID;
     private final String CLIENT_SECRET;
-    private double latitudeToSearch;
-    private double longitudeToSearch;
-    private boolean usedDefaultLocation = false;
 
-    public YelpRunner(double latitudeToSearch, double longitudeToSearch, Context context)
+    public static List<Business> m_listBusinesses = new ArrayList<>();
+    private Map<String, String> m_yelpParams;
+
+    private final double m_latitudeToSearch;
+    private final double m_longitudeToSearch;
+    private static boolean m_usedDefaultLocation;
+
+    public YelpDataGetter(double latitudeToSearch, double longitudeToSearch, Context context)
     {
-        this.latitudeToSearch = latitudeToSearch;
-        this.longitudeToSearch = longitudeToSearch;
+        this.m_latitudeToSearch = latitudeToSearch;
+        this.m_longitudeToSearch = longitudeToSearch;
         CLIENT_ID = context.getString(R.string.client_id);
         CLIENT_SECRET = context.getString(R.string.client_secret);
     }
@@ -48,7 +50,7 @@ public class YelpRunner
 
             setUpParams();
             //Use the API
-            Call<SearchResponse> call = yelpFusionApi.getBusinessSearch(params);
+            Call<SearchResponse> call = yelpFusionApi.getBusinessSearch(m_yelpParams);
             Response<SearchResponse> response = call.execute();
 
             if (response.code() != 200)
@@ -56,7 +58,7 @@ public class YelpRunner
                 return "Loading page error-" + response.code();
             }
 
-            listBusinesses = response.body().getBusinesses();
+            m_listBusinesses = response.body().getBusinesses();
         }
         catch (IOException e)
         {
@@ -64,7 +66,7 @@ public class YelpRunner
             return "We had an error:" + e.getMessage();
         }
 
-        if(listBusinesses.size() == 0)
+        if(m_listBusinesses.size() == 0)
         {
             return NO_BUSINESSES_FOUND;
         }
@@ -74,33 +76,33 @@ public class YelpRunner
 
     private void setUpParams()
     {
-        params = new HashMap<>();
+        m_yelpParams = new HashMap<>();
 
         //Use default location if no location provided(San Diego, CA)
-        if (latitudeToSearch == 0 && longitudeToSearch == 0)
+        if (m_latitudeToSearch == 0 && m_longitudeToSearch == 0)
         {
-            usedDefaultLocation = true;
-            params.put("latitude", "32.7157");
-            params.put("longitude", "-117.071869");
+            m_usedDefaultLocation = true;
+            m_yelpParams.put("latitude", "32.7157");
+            m_yelpParams.put("longitude", "-117.071869");
         }
         else
         {
-            params.put("latitude", Double.toString(latitudeToSearch));
-            params.put("longitude", Double.toString(longitudeToSearch));
+            m_yelpParams.put("latitude", Double.toString(m_latitudeToSearch));
+            m_yelpParams.put("longitude", Double.toString(m_longitudeToSearch));
         }
 
         //Convert miles to meters
-        String radius = Integer.toString((1609 * FoodSelectionDetails.getMaxDistance()));
+        String radius = Integer.toString((1609 * FoodSelectionDataModel.getMaxDistance()));
 
         //Set some additional parameters
-        params.put("radius", radius); //5 miles
-        params.put("limit", "50");
-        params.put("sort_by", "distance");
-        params.put("term", "restaurants");
+        m_yelpParams.put("radius", radius); //5 miles
+        m_yelpParams.put("limit", "50");
+        m_yelpParams.put("sort_by", "distance");
+        m_yelpParams.put("term", "restaurants");
     }
 
-    public boolean isUsedDefaultLocation()
+    public static boolean isUsedDefaultLocation()
     {
-        return usedDefaultLocation;
+        return m_usedDefaultLocation;
     }
 }

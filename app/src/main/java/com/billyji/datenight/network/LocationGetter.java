@@ -9,27 +9,22 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.widget.Toast;
 
 public class LocationGetter
 {
-
-    private static final String PERMISSION_MESSAGE = "Location permission needs to be granted to use this app. You can go into Device " +
-        "settings->App->This app-> and Permissions";
-    private static LocationListener locationListener;
-    private static LocationManager locationManager;
-    private static double latitudeLast;
-    private static double longitudeLast;
+    private static LocationListener m_locationListener;
+    private static LocationManager m_locationManager;
+    private static double m_latitudeLast;
+    private static double m_longitudeLast;
 
     public static void getLocation(Context context)
     {
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        m_locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED)
         {
-            latitudeLast = 0;
-            longitudeLast = 0;
-            Toast.makeText(context, PERMISSION_MESSAGE, Toast.LENGTH_SHORT).show();
+            m_latitudeLast = 0;
+            m_longitudeLast = 0;
             return;
         }
 
@@ -42,45 +37,38 @@ public class LocationGetter
         criteria.setSpeedRequired(false);
         criteria.setPowerRequirement(Criteria.POWER_LOW);
 
-        String bestProvider = locationManager.getBestProvider(criteria, true);
+        String bestProvider = m_locationManager.getBestProvider(criteria, true);
 
-        if (locationManager.isProviderEnabled(bestProvider))
+        if (m_locationManager.isProviderEnabled(bestProvider))
         {
-            locationListener = new LocationListenerCustom(context);
-            locationManager.requestSingleUpdate(bestProvider, locationListener, null);
-            Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
+            m_locationListener = new LocationListenerCustom();
+            m_locationManager.requestSingleUpdate(bestProvider, m_locationListener, null);
+            Location lastKnownLocation = m_locationManager.getLastKnownLocation(bestProvider);
             if (lastKnownLocation != null)
             {
-                latitudeLast = lastKnownLocation.getLatitude();
-                longitudeLast = lastKnownLocation.getLongitude();
+                m_latitudeLast = lastKnownLocation.getLatitude();
+                m_longitudeLast = lastKnownLocation.getLongitude();
             }
         }
     }
 
     private static void stopUpdateRequest()
     {
-        locationManager.removeUpdates(locationListener);
+        m_locationManager.removeUpdates(m_locationListener);
     }
 
     public static double getLatitudeLast()
     {
-        return latitudeLast;
+        return m_latitudeLast;
     }
 
     public static double getLongitudeLast()
     {
-        return longitudeLast;
+        return m_longitudeLast;
     }
 
     private static class LocationListenerCustom implements LocationListener
     {
-        final Context context;
-
-        LocationListenerCustom(Context context)
-        {
-            this.context = context;
-        }
-
         /**
          * Called when the location has changed.
          * <p/>

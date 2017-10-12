@@ -36,15 +36,12 @@
             android:name="com.billyji.datenight.ui.FoodChoiceActivity"
             android:label="@string/title_food_choices"
             android:screenOrientation="sensorPortrait"
-            android:parentActivityName="com.billyji.datenight.ui.MainActivity"
             >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.billyji.datenight.ui.MainActivity" />
-
         </activity>
 
     </application>
-
 </manifest>

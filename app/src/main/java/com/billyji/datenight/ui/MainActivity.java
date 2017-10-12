@@ -17,9 +17,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.billyji.datenight.R;
-import com.billyji.datenight.data.FoodSelectionDetails;
+import com.billyji.datenight.data.FoodSelectionDataModel;
 import com.billyji.datenight.network.LocationGetter;
-import com.billyji.datenight.network.YelpRunner;
+import com.billyji.datenight.network.YelpDataGetter;
 
 import java.lang.ref.WeakReference;
 import java.net.URL;
@@ -30,16 +30,18 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity
 {
-
-    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 24;
-    private static ProgressDialog progressDialog;
-
     @BindView(R.id.max_distance)
     EditText m_maxDistance;
     @BindView(R.id.min_stars)
     EditText m_minStars;
     @BindView(R.id.max_price)
     EditText m_maxPrice;
+
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 24;
+    private static final int DEFAULT_DISTANCE = 5;
+    private static final double DEFAULT_STARS = 3;
+    private static final String DEFAULT_PRICE = "2";
+    private static ProgressDialog m_progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -49,17 +51,15 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        //Permissions!
+        //Permissions
         if (ContextCompat.checkSelfPermission(this,
             Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED)
         {
-
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.ACCESS_FINE_LOCATION))
             {
-
                 ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
@@ -75,18 +75,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume()
+    protected void onPause()
     {
-        super.onResume();
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        super.onDestroy();
-        if (progressDialog != null)
+        super.onPause();
+        if (m_progressDialog != null)
         {
-            progressDialog.dismiss();
+            m_progressDialog.dismiss();
         }
     }
 
@@ -104,15 +98,17 @@ public class MainActivity extends AppCompatActivity
 
     private void setFoodSelectionDetails()
     {
-        FoodSelectionDetails.setMaxDistance(m_maxDistance.getText().length() == 0 ?
-            5 : Double.parseDouble(m_maxDistance.getText().toString()));
-        FoodSelectionDetails.setMinStars(m_minStars.getText().length() == 0 ?
-            3 : Double.parseDouble(m_minStars.getText().toString()));
-        FoodSelectionDetails.setMaxPrice(m_maxPrice.getText().length() == 0 ?
-            "2" : m_maxPrice.getText().toString());
+        FoodSelectionDataModel.setMaxDistance(m_maxDistance.getText().length() == 0 ?
+            DEFAULT_DISTANCE : Double.parseDouble(m_maxDistance.getText().toString()));
+
+        FoodSelectionDataModel.setMinStars(m_minStars.getText().length() == 0 ?
+            DEFAULT_STARS : Double.parseDouble(m_minStars.getText().toString()));
+
+        FoodSelectionDataModel.setMaxPrice(m_maxPrice.getText().length() == 0 ?
+            DEFAULT_PRICE : m_maxPrice.getText().toString());
     }
 
-    public boolean checkConnection()
+    private boolean checkConnection()
     {
         ConnectivityManager cm =
             (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -126,7 +122,7 @@ public class MainActivity extends AppCompatActivity
 
             if (!isConnected)
             {
-                Toast toast = Toast.makeText(this, "There is no network connection.", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT);
                 toast.setGravity(Gravity.CENTER, 0, 0);
                 toast.show();
             }
@@ -138,8 +134,8 @@ public class MainActivity extends AppCompatActivity
     private static class DownloadMessage extends AsyncTask<URL, Integer, String>
     {
 
-        YelpRunner yelpRunner;
-        private WeakReference<MainActivity> activityReference;
+        YelpDataGetter m_yelpDataGetter;
+        private final WeakReference<MainActivity> activityReference;
 
         DownloadMessage(MainActivity context)
         {
@@ -152,13 +148,13 @@ public class MainActivity extends AppCompatActivity
 
             try
             {
-                //Gets the restaurant data using coordinates.
-                yelpRunner = new YelpRunner(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get());
-                dataFromYelp = yelpRunner.getDataFromYelp();
+                m_yelpDataGetter = new YelpDataGetter(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get());
+                dataFromYelp = m_yelpDataGetter.getDataFromYelp();
             }
             catch (Exception e)
             {
                 e.printStackTrace();
+                onCancelled();
             }
 
             return dataFromYelp;
@@ -167,33 +163,37 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPreExecute()
         {
-            progressDialog = new ProgressDialog(activityReference.get());
-            progressDialog.setMessage("Finding you some eats…");
-            progressDialog.show();
+            m_progressDialog = new ProgressDialog(activityReference.get());
+            m_progressDialog.setMessage(activityReference.get().getString(R.string.finding_food_notification));
+            m_progressDialog.show();
+        }
+
+        @Override
+        protected void onCancelled()
+        {
+            if (m_progressDialog.isShowing())
+            {
+                m_progressDialog.dismiss();
+            }
         }
 
         protected void onPostExecute(String result)
         {
-            if (progressDialog.isShowing())
+            if(result.equals(YelpDataGetter.NO_BUSINESSES_FOUND))
             {
-                progressDialog.dismiss();
-            }
-
-            if(result.equals(YelpRunner.NO_BUSINESSES_FOUND))
-            {
-                Toast.makeText(activityReference.get(), "We could not find any businesses nearby you", Toast.LENGTH_LONG).show();
+                Toast.makeText(activityReference.get(), R.string.no_businesses_found, Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (!result.equals(YelpRunner.DATA_FETCHED))
+            if (!result.equals(YelpDataGetter.DATA_FETCHED))
             {
-                Toast.makeText(activityReference.get(), "We could not get data:" + result, Toast.LENGTH_LONG).show();
+                Toast.makeText(activityReference.get(), R.string.no_data_received + result, Toast.LENGTH_LONG).show();
                 return;
             }
 
-            if (yelpRunner.isUsedDefaultLocation())
+            if (YelpDataGetter.isUsedDefaultLocation())
             {
-                Toast.makeText(activityReference.get(), "Could not get location...default location was used...", Toast.LENGTH_LONG).show();
+                Toast.makeText(activityReference.get(), R.string.using_default_location, Toast.LENGTH_LONG).show();
             }
 
             Intent intent = new Intent(activityReference.get(), FoodChoiceActivity.class);

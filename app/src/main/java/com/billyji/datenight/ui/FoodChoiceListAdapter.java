@@ -21,14 +21,13 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.billyji.datenight.R;
-import com.billyji.datenight.data.YelpBusinessModel;
-import com.billyji.datenight.network.YelpRunner;
+import com.billyji.datenight.data.YelpDataModel;
+import com.billyji.datenight.network.YelpDataGetter;
 import com.squareup.picasso.Picasso;
 import com.yelp.fusion.client.models.Business;
 import com.yelp.fusion.client.models.Category;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,8 +58,8 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     @Nullable
     TextView m_website;
 
-    private final Activity context;
-    private final YelpBusinessModel m_businessModel = new YelpBusinessModel(YelpRunner.listBusinesses);
+    private final Activity m_context;
+    private final YelpDataModel m_businessModel = new YelpDataModel(YelpDataGetter.m_listBusinesses);
     private Business m_curBusiness;
     private boolean m_onlyOneBusiness;
 
@@ -68,7 +67,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     {
         super(context, R.layout.food_list, listSizeReference);
 
-        this.context = context;
+        this.m_context = context;
         m_businessModel.getFiveBusinesses();
     }
 
@@ -76,7 +75,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     public @NonNull
     View getView(int position, View view, @NonNull ViewGroup parent)
     {
-        View rowView = inflateRowView();
+        View rowView = inflateRowView(parent);
         ButterKnife.bind(this, rowView);
 
         m_curBusiness = m_businessModel.getBusinesses().get(position);
@@ -90,16 +89,16 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
         return rowView;
     }
 
-    private View inflateRowView()
+    private View inflateRowView(ViewGroup parent)
     {
         View rowView;
         if (m_onlyOneBusiness)
         {
-            rowView = LayoutInflater.from(context).inflate(R.layout.selected_food_detail, null);
+            rowView = LayoutInflater.from(m_context).inflate(R.layout.selected_food_detail, parent, false);
         }
         else
         {
-            rowView = LayoutInflater.from(context).inflate(R.layout.food_list, null);
+            rowView = LayoutInflater.from(m_context).inflate(R.layout.food_list, parent, false);
         }
 
         return rowView;
@@ -109,14 +108,14 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     {
         if(m_businessModel.removeBusiness(position))
         {
-            ((FoodChoiceActivity) context).update(m_businessModel.getBusinessListSize());
+            ((FoodChoiceActivity) m_context).update(m_businessModel.getBusinessListSize());
             notifyDataSetChanged();
         }
     }
 
-    void setOnlyOneBusiness(boolean exist)
+    void setOnlyOneBusiness()
     {
-        m_onlyOneBusiness = exist;
+        m_onlyOneBusiness = true;
     }
 
     private void setUpView(int position)
@@ -129,7 +128,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     private void setFoodPicture(int position)
     {
         Picasso
-            .with(context)
+            .with(m_context)
             .load(m_curBusiness.getImageUrl())
             .resize(100, 100)
             .centerCrop()
@@ -152,7 +151,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
         String numStars = Double.toString(m_curBusiness.getRating());
         String processedNumStars = numStars.replace('.', '_');
 
-        int resourceID = context.getResources().getIdentifier("stars_" + processedNumStars, "drawable", context.getPackageName());
+        int resourceID = m_context.getResources().getIdentifier("stars_" + processedNumStars, "drawable", m_context.getPackageName());
 
         m_numStars.setImageResource(resourceID);
     }
@@ -194,47 +193,73 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
 
     private void setDistance()
     {
-        m_distance.setText(m_businessModel.getDistance(m_curBusiness));
+        if(!YelpDataGetter.isUsedDefaultLocation())
+        {
+            m_distance.setText(m_businessModel.getDistance(m_curBusiness));
+        }
     }
 
     private void setAdditionalRestaurantDetails()
     {
-        m_phoneNumber.setText(m_curBusiness.getDisplayPhone());
-        m_phoneNumber.setOnClickListener(new OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + m_curBusiness.getDisplayPhone()));
-                context.startActivity(intent);
-            }
-        });
+        setPhoneNumber();
+        setAddress();
+        setWebsite();
+    }
 
-        m_address.setOnClickListener(new OnClickListener()
+    private void setPhoneNumber()
+    {
+        if(m_phoneNumber != null)
         {
-            @Override
-            public void onClick(View view)
+            String callNumber = "Call " + m_curBusiness.getDisplayPhone();
+            m_phoneNumber.setText(callNumber);
+            m_phoneNumber.setOnClickListener(new OnClickListener()
             {
-                String uri = String.format(Locale.ENGLISH, "geo:0,0?q=" + m_curBusiness.getName());
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                context.startActivity(intent);
-            }
-        });
+                @Override
+                public void onClick(View view)
+                {
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + m_curBusiness.getDisplayPhone()));
+                    m_context.startActivity(intent);
+                }
+            });
+        }
+    }
 
-        m_website.setClickable(true);
-        m_website.setMovementMethod(LinkMovementMethod.getInstance());
-        String text = "<a href='" + m_curBusiness.getUrl() + "'>" + "Check out " + m_curBusiness.getName() + " on Yelp" + "</a>";
-        m_website.setText(Html.fromHtml(text));
+    private void setAddress()
+    {
+        if(m_address != null)
+        {
+            m_address.setOnClickListener(new OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    String uri = "geo:0,0?q=" + m_curBusiness.getName();
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    m_context.startActivity(intent);
+                }
+            });
+        }
+    }
+
+    private void setWebsite()
+    {
+        if(m_website != null)
+        {
+            m_website.setClickable(true);
+            m_website.setMovementMethod(LinkMovementMethod.getInstance());
+            String text = "<a href='" + m_curBusiness.getUrl() + "'>" + "Check out " + m_curBusiness.getName() + " on Yelp" + "</a>";
+            m_website.setText(Html.fromHtml(text));
+        }
     }
 
     private void setListenerForLargePicture(final int position)
     {
-        final View customView = LayoutInflater.from(context).inflate(R.layout.popup_dialog, null);
+        final View customView = LayoutInflater.from(m_context).inflate(R.layout.popup_dialog, null);
         final ImageView popupDialog = customView.findViewById(R.id.tv);
 
         Picasso
-            .with(context)
+            .with(m_context)
             .load(m_businessModel.getBusinesses().get(position).getImageUrl())
             .resize(400, 400)
             .centerCrop()
@@ -256,12 +281,18 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
                 {
                     public boolean onTouch(View v, MotionEvent event)
                     {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN)
+                        switch (event.getAction())
                         {
-                            popupWindow.dismiss();
-                            return true;
+                            case MotionEvent.ACTION_DOWN:
+                                popupWindow.dismiss();
+                                break;
+                            case MotionEvent.ACTION_UP:
+                                v.performClick();
+                                break;
+                            default:
+                                break;
                         }
-                        return false;
+                        return true;
                     }
                 });
 
