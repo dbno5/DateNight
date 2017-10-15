@@ -2,6 +2,8 @@ package com.billyji.datenight;
 
 
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -24,6 +26,8 @@ public class TMDBApiInterface
         @GET("tv/popular")
         Call<Movie> getPopularTVShows(@Query("api_key") String apiKey, @Query("page") Integer page);
 
+        @GET("discover/movie")
+        Call<Movie> getMovieByGenre(@Query("api_key") String apiKey, @Query("page") Integer page, @Query("with_genres") List<String> genre);
 
         //will implement later
 //        @GET("tv/{id}/similar")

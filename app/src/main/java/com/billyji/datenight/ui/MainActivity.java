@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.billyji.datenight.R;
+import com.billyji.datenight.activities.NetflixActivity;
 import com.billyji.datenight.data.FoodSelectionDataModel;
 import com.billyji.datenight.network.LocationGetter;
 import com.billyji.datenight.network.YelpDataGetter;
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity
     @OnClick(R.id.find_food)
     void findFood()
     {
-<<<<<<< HEAD:app/src/main/java/com/billyji/datenight/activities/MainActivity.java
         Intent intent = new Intent(this, NetflixActivity.class);
         startActivity(intent);
 //        setFoodSelectionDetails();
@@ -97,15 +97,6 @@ public class MainActivity extends AppCompatActivity
 //        }
 //        LocationGetter.getLocation(this);
 //        new DownloadMessage(this).execute();
-=======
-        setFoodSelectionDetails();
-        if (!checkConnection())
-        {
-            return;
-        }
-        LocationGetter.getLocation(this);
-        new DownloadMessage(this).execute();
->>>>>>> master:app/src/main/java/com/billyji/datenight/ui/MainActivity.java
     }
 
     private void setFoodSelectionDetails()
@@ -160,14 +151,8 @@ public class MainActivity extends AppCompatActivity
 
             try
             {
-<<<<<<< HEAD:app/src/main/java/com/billyji/datenight/activities/MainActivity.java
-                //Gets the restaurant data using coordinates.
-                yelpRunner = new YelpRunner(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get());
-                dataFromYelp = yelpRunner.getDataFromYelp();
-=======
                 m_yelpDataGetter = new YelpDataGetter(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get());
                 dataFromYelp = m_yelpDataGetter.getDataFromYelp();
->>>>>>> master:app/src/main/java/com/billyji/datenight/ui/MainActivity.java
             }
             catch (Exception e)
             {

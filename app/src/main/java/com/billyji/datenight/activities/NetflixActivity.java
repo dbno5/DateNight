@@ -1,22 +1,14 @@
 package com.billyji.datenight.activities;
 
-import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.billyji.datenight.ApiClient;
 import com.billyji.datenight.Movie;
-import com.billyji.datenight.NetflixRunner2;
 import com.billyji.datenight.PopularMoviesResponse;
 import com.billyji.datenight.R;
 import com.billyji.datenight.TMDBApiInterface.ApiInterface;
-import com.net.codeusa.NetflixRoulette;
 
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,17 +21,32 @@ public class NetflixActivity extends AppCompatActivity
     private Call<PopularMoviesResponse> mPopularMoviesCall;
     private int currentPage = 1;
     private List<Movie> m_movieList = new ArrayList<>();
-    private NetflixRunner m_netflixRunner;
 
+    public enum Genres{
+        ACTION("28"), ADVENTURE("16"), ANIMATION("16"),
+        COMEDY("35"), DOCUMENTARY("99"), HORROR("27"),
+        ROMANCE("10749"), SCIFI("878");
+
+        private String genreId;
+
+        Genres(String genre){
+            this.genreId = genre;
+        }
+
+        public String getGenre()
+        {
+            return genreId;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.food_list);
-        loadActivity();
+        setContentView(R.layout.netflix_main);
 
+        loadActivity();
     }
 
     private void loadActivity()
@@ -67,24 +74,6 @@ public class NetflixActivity extends AppCompatActivity
                     if (movie != null)
                         m_movieList.add(movie);
                 }
-
-                m_netflixRunner = new NetflixRunner(m_movieList);
-
-                for (Movie movie : m_movieList)
-                {
-                    Log.e("movie", movie.getTitle());
-                }
-
-                for(String title : NetflixRunner2.movieList)
-                {
-                    Log.e("netflixc ", title);
-
-                }
-//                mMoviesAdapter.notifyDataSetChanged();
-//                if (response.body().getPage() == response.body().getTotalPages())
-//                    pagesOver = true;
-//                else
-//                    presentPage++;
             }
 
             @Override
@@ -93,42 +82,8 @@ public class NetflixActivity extends AppCompatActivity
 
             }
         });
-    }
 
 
-    private static class NetflixRunner extends AsyncTask<String, Context, List<Movie>>
-    {
-        private NetflixRunner2 m_netflixRunner = new NetflixRunner2();
-        private String m_id;
-        private List<Movie> movieList;
-        private List<Movie> netflixMovieList = new ArrayList<>();
 
-        NetflixRunner(List<Movie> list)
-        {
-            movieList = list;
-        }
-
-        @Override
-        protected List<Movie> doInBackground(String... strings)
-        {
-            for(Movie movie : movieList)
-            {
-                try
-                {
-                    m_netflixRunner.findTitle(movie.getTitle());
-                }
-                catch (IOException e)
-                {
-                    Log.e("tits", "tats");
-                }
-                catch (JSONException e)
-                {
-                    Log.e("tit222s", "tats");
-
-                }
-            }
-
-            return movieList;
-        }
     }
 }
