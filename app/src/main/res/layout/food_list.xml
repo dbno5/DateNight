@@ -3,68 +3,118 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_selector"
-    android:orientation="horizontal"
-    >
+    android:orientation="horizontal">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
-    <!--  ListRow Left sied Thumbnail image -->
+    <!-- Food Picture -->
     <LinearLayout
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="3dip"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginRight="5dip"
+        android:layout_marginEnd="5dip"
         android:background="@drawable/image_bg"
-        android:layout_marginRight="5dip">
+        android:padding="3dip">
 
         <ImageView
-            android:id="@+id/picture"
-            android:adjustViewBounds="true"
+            android:id="@+id/food_picture"
             android:layout_width="100dp"
-            android:layout_height="100dp" />
+            android:layout_height="100dp"
+            android:adjustViewBounds="true"
+            android:contentDescription="@null"/>
 
     </LinearLayout>
 
-    <!-- Title Of Song-->
+    <!-- Restaurant name -->
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/restaurant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toEndOf="@+id/thumbnail"
         android:textColor="#040404"
+        android:textStyle="bold"
         android:typeface="sans"
-        android:textStyle="bold" />
+        android:layout_marginRight="50dip"
+        android:layout_marginEnd="50dip"/>
 
-    <!-- Artist Name -->
+    <!-- Categories -->
     <TextView
         android:id="@+id/categories"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/name"
-        android:textColor="#343434"
+        android:layout_below="@id/restaurant_name"
         android:layout_marginTop="1dip"
-        android:layout_toRightOf="@+id/thumbnail" />
-    <!-- Rightend Duration -->
+        android:layout_toEndOf="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textColor="#343434"
+        android:layout_marginRight="50dip"
+        android:layout_marginEnd="50dip"/>
+
+    <LinearLayout
+        android:id="@+id/stars_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/categories"
+        android:layout_toEndOf="@id/thumbnail"
+        android:layout_toRightOf="@id/thumbnail"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <!--  Stars -->
+        <ImageView
+            android:id="@+id/stars"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:contentDescription="@null"/>
+
+        <!-- Number of Reviews -->
+        <TextView
+            android:id="@+id/reviews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginStart="10dip"/>
+    </LinearLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <!-- Dollar Signs -->
     <TextView
-        android:id="@+id/duration"
+        android:id="@+id/dollar_signs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/title"
-        android:gravity="right"
-        android:layout_marginRight="5dip"
-        android:textColor="#10bcc9"
-        android:textStyle="bold" />
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:scaleType="fitEnd"
+        android:layout_marginRight="10dip"
+        android:layout_marginEnd="10dip"
+        />
 
+        <TextView
+            android:id="@+id/distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dollar_signs"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            android:layout_marginRight="10dip"
+            android:layout_marginEnd="10dip"
+            />
 
-    <!--&lt;!&ndash; Rightend Arrow &ndash;&gt;-->
-    <!--<ImageButton-->
-    <!--android:id="@+id/remove_option"-->
-    <!--android:layout_width="50dp"-->
-    <!--android:layout_height="50dp"-->
-    <!--android:background="@null"-->
-    <!--android:layout_alignParentRight="true"-->
-    <!--android:layout_alignParentBottom="true"/>-->
-
+    </RelativeLayout>
 </RelativeLayout>
