@@ -49,8 +49,9 @@ public class YelpDataModel
 
     private boolean withinParameters(Business business)
     {
-        return business.getRating() >= FoodSelectionDataModel.getMinStars()
-            && business.getPrice().length() <= Double.parseDouble(FoodSelectionDataModel.getMaxPrice());
+        return business.getPrice() != null &&
+            business.getRating() >= FoodSelectionDataModel.getMinStars() &&
+            business.getPrice().length() <= Double.parseDouble(FoodSelectionDataModel.getMaxPrice());
     }
 
     private void addBusiness(Business business)
