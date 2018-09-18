@@ -12,7 +12,6 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/plate"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
         >
 
         <activity
@@ -31,6 +30,7 @@
         <activity
             android:name="com.billyji.datenight.ui.FoodChoiceActivity"
             android:label="@string/title_food_choices"
+            android:theme="@style/AppTheme"
             android:screenOrientation="sensorPortrait"
             >
             <meta-data

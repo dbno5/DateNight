@@ -31,7 +31,10 @@ public class YelpDataModel
         Random r = new Random();
         //Counter variable used in case there aren't 5 restaurants in the area
         int count = 0;
+        //need to check if there are five businesses nearby
+        if(m_allBusinesses.size() < 5) {
 
+        }
         while (m_fiveRandomBusinesses.size() < 5 && m_allBusinesses.size() > 0
             && count < 50)
         {
@@ -45,6 +48,7 @@ public class YelpDataModel
 
             count++;
         }
+
     }
 
     private boolean withinParameters(Business business)

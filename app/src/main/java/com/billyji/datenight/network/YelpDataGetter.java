@@ -22,8 +22,6 @@ public class YelpDataGetter
 {
     public static final String DATA_FETCHED = "Successfully got data";
     public static final String NO_BUSINESSES_FOUND = "No businesses found";
-    private final String CLIENT_ID;
-    private final String CLIENT_SECRET;
 
     public static List<Business> m_listBusinesses = new ArrayList<>();
     private Map<String, String> m_yelpParams;
@@ -36,8 +34,6 @@ public class YelpDataGetter
     {
         this.m_latitudeToSearch = latitudeToSearch;
         this.m_longitudeToSearch = longitudeToSearch;
-        CLIENT_ID = context.getString(R.string.client_id);
-        CLIENT_SECRET = context.getString(R.string.client_secret);
     }
 
     public String getDataFromYelp()
@@ -46,7 +42,7 @@ public class YelpDataGetter
 
         try
         {
-            YelpFusionApi yelpFusionApi = apiFactory.createAPI(CLIENT_ID, CLIENT_SECRET);
+            YelpFusionApi yelpFusionApi = apiFactory.createAPI("2-CJ9feTOxV79SAWienL9mxQm49bYE9Vlr21SmI8cnj5b9CczAN9pz9b59CxNz83e6VfXYvGp75njB_thQwtAEHT-lEsZzE8PbnMt2HMFpaBuEjNuX6CsFut47j3WXYx");
 
             setUpParams();
             //Use the API

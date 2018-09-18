@@ -63,7 +63,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     private Business m_curBusiness;
     private boolean m_onlyOneBusiness;
 
-    FoodChoiceListAdapter(Activity context, List<String> listSizeReference)
+    FoodChoiceListAdapter(Activity context, List<String> listSizeReference)//, YelpDataModel m_businesses)
     {
         super(context, R.layout.food_list, listSizeReference);
 
@@ -128,11 +128,11 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     private void setFoodPicture(int position)
     {
         Picasso
-            .with(m_context)
-            .load(m_curBusiness.getImageUrl())
-            .resize(100, 100)
-            .centerCrop()
-            .into(m_foodPicture);
+                .with(m_context)
+                .load(m_curBusiness.getImageUrl())
+                .resize(100, 100)
+                .centerCrop()
+                .into(m_foodPicture);
 
         setListenerForLargePicture(position);
     }
@@ -259,11 +259,11 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
         final ImageView popupDialog = customView.findViewById(R.id.tv);
 
         Picasso
-            .with(m_context)
-            .load(m_businessModel.getBusinesses().get(position).getImageUrl())
-            .resize(400, 400)
-            .centerCrop()
-            .into(popupDialog);
+                .with(m_context)
+                .load(m_businessModel.getBusinesses().get(position).getImageUrl())
+                .resize(400, 400)
+                .centerCrop()
+                .into(popupDialog);
 
         m_foodPicture.setOnClickListener(new View.OnClickListener()
         {
@@ -271,9 +271,9 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
             public void onClick(View view)
             {
                 final PopupWindow popupWindow = new PopupWindow(
-                    customView,
-                    LayoutParams.WRAP_CONTENT,
-                    LayoutParams.WRAP_CONTENT
+                        customView,
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
                 );
 
                 popupWindow.setFocusable(true);
@@ -284,13 +284,13 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
                         switch (event.getAction())
                         {
                             case MotionEvent.ACTION_DOWN:
-                                popupWindow.dismiss();
-                                break;
+                            popupWindow.dismiss();
+                            break;
                             case MotionEvent.ACTION_UP:
-                                v.performClick();
-                                break;
+                            v.performClick();
+                            break;
                             default:
-                                break;
+                            break;
                         }
                         return true;
                     }

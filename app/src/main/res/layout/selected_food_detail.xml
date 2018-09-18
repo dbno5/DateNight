@@ -25,7 +25,7 @@
             android:padding="3dip">
 
             <ImageView
-                android:id="@+id/food_picture"
+                android:id="@+id/selected_food_picture"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:adjustViewBounds="true"
@@ -35,7 +35,7 @@
 
         <!-- Restaurant name -->
         <TextView
-            android:id="@+id/restaurant_name"
+            android:id="@+id/selected_restaurant_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/thumbnail"
@@ -49,7 +49,7 @@
 
         <!-- Categories -->
         <TextView
-            android:id="@+id/categories"
+            android:id="@+id/selected_categories"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/restaurant_name"
@@ -72,14 +72,14 @@
 
             <!--  Stars -->
             <ImageView
-                android:id="@+id/stars"
+                android:id="@+id/selected_stars"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:contentDescription="@null"/>
 
             <!-- Number of Reviews -->
             <TextView
-                android:id="@+id/reviews"
+                android:id="@+id/selected_reviews"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
@@ -93,7 +93,7 @@
         android:layout_height="match_parent">
         <!-- Dollar Signs -->
         <TextView
-            android:id="@+id/dollar_signs"
+            android:id="@+id/selected_dollar_signs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -106,7 +106,7 @@
             />
 
         <TextView
-            android:id="@+id/distance"
+            android:id="@+id/selected_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/dollar_signs"

@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:fitsSystemWindows="true">
-
-    <LinearLayout
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="56dp">
+        android:paddingTop="56dp"
+        android:background="#ECEFF1">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -20,60 +17,94 @@
             android:src="@drawable/logo"
             android:contentDescription="@null"/>
 
-        <!-- Email Label -->
+    <ViewFlipper
+        android:id="@+id/ViewFlipper01"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:id="@+id/test">
 
-            <EditText
-                android:id="@+id/max_distance"
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/distance"
-                android:inputType="numberDecimal" />
-        </android.support.design.widget.TextInputLayout>
-
-        <!-- Password Label -->
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <EditText
-                android:id="@+id/min_stars"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/min_stars"
-                android:inputType="numberDecimal" />
+                android:textColorHint="#757575"/>
+            <Spinner
+                android:id="@+id/distance_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="8dp"
+            android:id="@+id/test2">
 
-            <EditText
-                android:id="@+id/max_price"
+        <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/max_price"
-                android:inputType="numberDecimal" />
+                android:textColorHint="#757575"/>
+            <Spinner
+                android:id="@+id/price_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Signup Button -->
-        <Button
-            android:id="@+id/find_food"
-            android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            android:layout_marginTop="24dp"
-            android:padding="12dp"
-            android:text="@string/find_food_button"
-            android:textAllCaps="false" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/min_stars"
+                android:textColorHint="#757575"/>
+            <Spinner
+                android:id="@+id/stars_spinner"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+    </ViewFlipper>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/Previous"
+        android:background="#bbbbbb"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Previous" />
+
+    <Button
+        android:id="@+id/Next"
+        android:background="#bbbbbb"
+        android:layout_marginBottom="5dp"
+        android:layout_toEndOf="@id/Previous"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next" />
+    </RelativeLayout>
+    <Button
+        android:id="@+id/find_food"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:text="@string/find_food_button"
+        android:textAllCaps="false"
+        android:shadowColor="#c4fcdd"
+        android:background="@drawable/find_food_button" />
     </LinearLayout>
-</ScrollView>
