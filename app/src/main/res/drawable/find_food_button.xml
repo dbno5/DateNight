@@ -50,7 +50,7 @@
                 android:angle="270" />
             <stroke
                 android:width="3dp"
-                android:color="#033b38" />
+                android:color="#607D8B" />
             <corners
                 android:radius="3dp" />
             <padding

@@ -5,7 +5,6 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.LightingColorFilter
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.os.AsyncTask
@@ -14,19 +13,15 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.view.*
-import android.view.animation.AnimationUtils
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
 import com.billyji.datenight.R
-import com.billyji.datenight.R.id.distance_spinner
 import com.billyji.datenight.data.FoodSelectionDataModel
 import com.billyji.datenight.network.LocationGetter
 import com.billyji.datenight.network.YelpDataGetter
-import kotlinx.android.synthetic.main.food_list.*
-import kotlinx.android.synthetic.main.spinner_item.*
+import com.billyji.datenight.ui.ViewIndicator.CirclePageIndicator
 
 import java.lang.ref.WeakReference
 import java.net.URL
@@ -43,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
         // Apply the adapter to the spinner
-        distance_spinner.adapter = adapter
-        distance_spinner.setSelection(2)
+        distance_spinner.setAdapter(adapter)
+        distance_spinner.selectedIndex = 2
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
@@ -52,8 +47,9 @@ class MainActivity : AppCompatActivity() {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
         // Apply the adapter to the spinner
-        price_spinner.adapter = adapter
-        price_spinner.setSelection(1)
+        price_spinner.setAdapter(adapter)
+        price_spinner.selectedIndex = 1
+        price_spinner.setTextColor(ContextCompat.getColor(this, R.color.dollar_sign_color))
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
@@ -61,26 +57,16 @@ class MainActivity : AppCompatActivity() {
         // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
         // Apply the adapter to the spinner
-        stars_spinner.adapter = adapter
-        stars_spinner.setSelection(1)
+        stars_spinner.setAdapter(adapter)
+        stars_spinner.selectedIndex = 2
+        stars_spinner.setTextColor(ContextCompat.getColor(this, R.color.stars_color))
 
-        Next.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                // TODO Auto-generated method stub
-                ViewFlipper01.setInAnimation(this@MainActivity, R.anim.in_from_left)
-                ViewFlipper01.setOutAnimation(this@MainActivity, R.anim.out_from_right)
-                ViewFlipper01.showNext()
-            }
-        })
+//        val listener: View.OnTouchListener = OnSwipeTouchListener(applicationContext)
+        yelp_options_flipper.displayedChild = 2
+        val circlePageIndicator: CirclePageIndicator = findViewById(R.id.circlePageIndicator)
+        circlePageIndicator.setViewFlipper(yelp_options_flipper)
 
-        Previous.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View) {
-                // TODO Auto-generated method stub
-                ViewFlipper01.setInAnimation(this@MainActivity, R.anim.in_from_right)
-                ViewFlipper01.setOutAnimation(this@MainActivity, R.anim.out_from_left)
-                ViewFlipper01.showPrevious()
-            }
-        })
+        entire_screen.setOnTouchListener(OnSwipeTouchListener(applicationContext, yelp_options_flipper, circlePageIndicator))
 
         //Permissions
         if (ContextCompat.checkSelfPermission(this,
@@ -105,47 +91,13 @@ class MainActivity : AppCompatActivity() {
             LocationGetter.getLocation(this)
             DownloadMessage(this).execute()
         }
+        find_food_default.setOnClickListener {
+            setFoodSelectionDetails()
+            if (!checkConnection()) { Unit }
+            LocationGetter.getLocation(this)
+            DownloadMessage(this).execute()
+        }
     }
-
-
-//    override fun onTouchEvent(touchevent: MotionEvent): Boolean {
-//        val initialX: Float
-//        val finalX: Float
-//
-//        if (view_flipper != null) {
-//            view_flipper.setInAnimation(applicationContext, android.R.anim.slide_in_left)
-//            view_flipper.setOutAnimation(applicationContext, android.R.anim.slide_out_right)
-//        }
-//
-////        when (touchevent.action) {
-////            is MotionEvent.ACTION_DOWN
-////                -> initialX = touchevent.x
-////            is MotionEvent.ACTION_UP
-////                ->  finalX = touchevent.x
-////
-////            if (initialX > finalX) {
-////                if (view_flipper.displayedChild == 1)
-////                    break
-////
-////                view_flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.in_from_left));
-////                view_flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.out_from_left));
-////
-////                view_flipper.showNext();
-////            }
-////            else {
-////                if (view_flipper.getDisplayedChild() == 0)
-////                    break;
-////
-////                view_flipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.in_from_right));
-////                view_flipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.out_from_right));
-////
-////                view_flipper.showPrevious();
-////            }
-////            break
-////        }
-//        return false
-//    }
-
 
     override fun onPause() {
         super.onPause()
@@ -154,13 +106,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setFoodSelectionDetails() {
-        System.out.println(distance_spinner.selectedItem.toString().toInt())
-        System.out.println(distance_spinner.selectedItem.toString().toDouble())
-        FoodSelectionDataModel.setMaxDistance(distance_spinner.selectedItem.toString().toInt())
-        FoodSelectionDataModel.setMinStars(stars_spinner.selectedItem.toString().toDouble())
-        FoodSelectionDataModel.setMaxPrice(price_spinner.selectedItem.toString())
+        FoodSelectionDataModel.setMaxDistance(distance_spinner.selectedIndex.toString().toInt())
+        FoodSelectionDataModel.setMinStars(stars_spinner.selectedIndex.toString().toDouble())
+        FoodSelectionDataModel.setMaxPrice(price_spinner.selectedIndex.toString())
     }
 
     private fun checkConnection(): Boolean {
@@ -182,7 +131,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private class DownloadMessage internal constructor(context: MainActivity) : AsyncTask<URL, Int, String>() {
-        internal lateinit var m_yelpDataGetter: YelpDataGetter
+        internal var m_yelpDataGetter: YelpDataGetter? = null
         private val activityReference: WeakReference<MainActivity>
 
         init {
@@ -194,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 m_yelpDataGetter = YelpDataGetter(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get())
-                dataFromYelp = m_yelpDataGetter.dataFromYelp
+                dataFromYelp = m_yelpDataGetter!!.dataFromYelp
             } catch (e: Exception) {
                 e.printStackTrace()
                 onCancelled()
@@ -237,9 +186,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 24
-//        private val DEFAULT_DISTANCE: Double = 5.0
-//        private val DEFAULT_STARS = 3.0
-//        private val DEFAULT_PRICE = "2"
         private lateinit var m_progressDialog: ProgressDialog
     }
 }

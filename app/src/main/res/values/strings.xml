@@ -8,35 +8,30 @@
     <string name="progess_dialog_text">Finding you some eats…</string>
     <string name="find_food_button">Find me food!</string>
     <string name="navigate_me">Navigate me!</string>
-    <string name="distance">Max distance(in miles)?</string>
+    <string name="distance">Max distance?</string>
     <string name="min_stars">Min # stars?</string>
     <string name="max_price">Max $ signs?</string>
     <string name="yelp_api_key">AIzaSyDavakwBMruXB53FhwPskU-YmAaQju-ql4</string>
     <string-array name="distance_options">
-        <item>1</item>
-        <item>2</item>
-        <item>5</item>
-        <item>10</item>
-        <item>20</item>
+        <item>1mi</item>
+        <item>2mi</item>
+        <item>5mi</item>
+        <item>10mi</item>
+        <item>20mi</item>
     </string-array>
     <string-array name="price_options">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
+        <item>$</item>
+        <item>$$</item>
+        <item>$$$</item>
+        <item>$$$$</item>
     </string-array>
     <string-array name="stars_options">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
+        <item>★</item>
+        <item>★★</item>
+        <item>★★★</item>
+        <item>★★★★</item>
+        <item>★★★★★</item>
     </string-array>
-    <string name="setting_none">Sorry, no settings on free app.</string>
-    <string name="alert_dialog_ok">OK</string>
-    <string name="alert_dialog_cancel">Cancel</string>
-    <string name="alert_dialog_two_buttons_title">Reminder</string>
     <string name="request_location"><![CDATA[Location permission should to be granted to use this app. Otherwise we can only use with a default location. You can go into Device settings->App->This app-> and Permissions to allow location requests.]]></string>
     <string name="permission_request_title">Permission Request</string>
     <string name="location_not_enabled_dialog_message">Location is not enabled. If location isn\'t turned on, the default location or last known location will be used for demo.</string>
@@ -49,4 +44,5 @@
     <string name="finished_picking">Congratulations!</string>
     <string name="remove_two_more">Remove two more</string>
     <string name="swipe_two">Swipe away two options</string>
+    <string name="search_with_defaults">Search with defaults!</string>
 </resources>
