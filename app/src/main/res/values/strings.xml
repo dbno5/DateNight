@@ -11,7 +11,6 @@
     <string name="distance">Max distance?</string>
     <string name="min_stars">Min # stars?</string>
     <string name="max_price">Max $ signs?</string>
-    <string name="yelp_api_key">AIzaSyDavakwBMruXB53FhwPskU-YmAaQju-ql4</string>
     <string-array name="distance_options">
         <item>1mi</item>
         <item>2mi</item>
@@ -45,4 +44,5 @@
     <string name="remove_two_more">Remove two more</string>
     <string name="swipe_two">Swipe away two options</string>
     <string name="search_with_defaults">Search with defaults!</string>
+    <string name="api_key">2-CJ9feTOxV79SAWienL9mxQm49bYE9Vlr21SmI8cnj5b9CczAN9pz9b59CxNz83e6VfXYvGp75njB_thQwtAEHT-lEsZzE8PbnMt2HMFpaBuEjNuX6CsFut47j3WXYx</string>
 </resources>

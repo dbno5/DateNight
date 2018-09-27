@@ -1,7 +1,6 @@
 package com.billyji.datenight.ui
 
 import android.Manifest
-import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -32,136 +31,114 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
+        setUpSpinners()
+        setUpFlipperAndPageIndicator()
+
+        checkForPermissions()
+        find_food.setOnClickListener {
+            callYelpAPI()
+        }
+        find_food_default.setOnClickListener {
+            callYelpAPI()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logo_image_view.isAnimating = false
+    }
+
+    private fun setUpSpinners() {
         var adapter = ArrayAdapter.createFromResource(this,
                 R.array.distance_options, R.layout.spinner_item)
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
-        // Apply the adapter to the spinner
         distance_spinner.setAdapter(adapter)
         distance_spinner.selectedIndex = 2
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
                 R.array.price_options, R.layout.spinner_item)
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
-        // Apply the adapter to the spinner
         price_spinner.setAdapter(adapter)
         price_spinner.selectedIndex = 1
         price_spinner.setTextColor(ContextCompat.getColor(this, R.color.dollar_sign_color))
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
         adapter = ArrayAdapter.createFromResource(this,
                 R.array.stars_options, R.layout.spinner_item)
-        // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
-        // Apply the adapter to the spinner
         stars_spinner.setAdapter(adapter)
         stars_spinner.selectedIndex = 2
         stars_spinner.setTextColor(ContextCompat.getColor(this, R.color.stars_color))
+    }
 
-//        val listener: View.OnTouchListener = OnSwipeTouchListener(applicationContext)
+    private fun setUpFlipperAndPageIndicator() {
         yelp_options_flipper.displayedChild = 2
         val circlePageIndicator: CirclePageIndicator = findViewById(R.id.circlePageIndicator)
         circlePageIndicator.setViewFlipper(yelp_options_flipper)
-
         entire_screen.setOnTouchListener(OnSwipeTouchListener(applicationContext, yelp_options_flipper, circlePageIndicator))
+    }
 
-        //Permissions
+    private fun checkForPermissions() {
         if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // Should we show an explanation?
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                            Manifest.permission.ACCESS_FINE_LOCATION)) {
                 ActivityCompat.requestPermissions(this,
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
-            } else {
-                // No explanation needed, we can request the permission.
+            }
+            else {
                 ActivityCompat.requestPermissions(this,
                         arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION)
             }
         }
-
-        find_food.setOnClickListener {
-            setFoodSelectionDetails()
-            if (!checkConnection()) { Unit }
-            LocationGetter.getLocation(this)
-            DownloadMessage(this).execute()
-        }
-        find_food_default.setOnClickListener {
-            setFoodSelectionDetails()
-            if (!checkConnection()) { Unit }
-            LocationGetter.getLocation(this)
-            DownloadMessage(this).execute()
-        }
     }
-
-    override fun onPause() {
-        super.onPause()
-        if (m_progressDialog != null) {
-            m_progressDialog!!.dismiss()
-        }
-    }
-
     private fun setFoodSelectionDetails() {
-        FoodSelectionDataModel.setMaxDistance(distance_spinner.selectedIndex.toString().toInt())
-        FoodSelectionDataModel.setMinStars(stars_spinner.selectedIndex.toString().toDouble())
-        FoodSelectionDataModel.setMaxPrice(price_spinner.selectedIndex.toString())
+        FoodSelectionDataModel.maxDistance = distance_spinner.selectedIndex.toString().toInt()
+        FoodSelectionDataModel.minStars = stars_spinner.selectedIndex.toString().toDouble()
+        FoodSelectionDataModel.maxPrice = price_spinner.selectedIndex.toString()
+    }
+
+    private fun callYelpAPI() {
+        setFoodSelectionDetails()
+        if (!checkConnection()) return
+        LocationGetter.getLocation(this)
+        logo_image_view.isAnimating = true
+        DownloadMessage(this).execute()
     }
 
     private fun checkConnection(): Boolean {
         val cm = this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetwork: NetworkInfo?
 
-        if (cm != null) {
-            activeNetwork = cm.activeNetworkInfo
-            val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
+        activeNetwork = cm.activeNetworkInfo
+        val isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting
 
-            if (!isConnected) {
-                val toast = Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT)
-                toast.setGravity(Gravity.CENTER, 0, 0)
-                toast.show()
-            }
-            return isConnected
+        if (!isConnected) {
+            val toast = Toast.makeText(this, R.string.no_network_connection, Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
         }
-        return false
+        return isConnected
     }
 
     private class DownloadMessage internal constructor(context: MainActivity) : AsyncTask<URL, Int, String>() {
-        internal var m_yelpDataGetter: YelpDataGetter? = null
-        private val activityReference: WeakReference<MainActivity>
-
-        init {
-            activityReference = WeakReference(context)
-        }
+        internal var yelpDataGetter: YelpDataGetter? = null
+        private val activityReference: WeakReference<MainActivity> = WeakReference(context)
+        internal val apiKey = context.getString(R.string.api_key)
 
         override fun doInBackground(vararg urls: URL): String? {
             var dataFromYelp: String? = null
 
             try {
-                m_yelpDataGetter = YelpDataGetter(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), activityReference.get())
-                dataFromYelp = m_yelpDataGetter!!.dataFromYelp
+                yelpDataGetter = YelpDataGetter(LocationGetter.getLatitudeLast(), LocationGetter.getLongitudeLast(), apiKey)
+                dataFromYelp = yelpDataGetter!!.dataFromYelp
             } catch (e: Exception) {
                 e.printStackTrace()
                 onCancelled()
             }
 
             return dataFromYelp
-        }
-
-        override fun onPreExecute() {
-            m_progressDialog = ProgressDialog(activityReference.get())
-            m_progressDialog.setMessage(activityReference.get()?.getString(R.string.finding_food_notification))
-            m_progressDialog.show()
-        }
-
-        override fun onCancelled() {
-            if (m_progressDialog.isShowing) {
-                m_progressDialog.dismiss()
-            }
         }
 
         override fun onPostExecute(result: String) {
@@ -175,7 +152,7 @@ class MainActivity : AppCompatActivity() {
                 return
             }
 
-            if (YelpDataGetter.isUsedDefaultLocation()) {
+            if (YelpDataGetter.isUsedDefaultLocation) {
                 Toast.makeText(activityReference.get(), R.string.using_default_location, Toast.LENGTH_LONG).show()
             }
 
@@ -185,7 +162,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 24
-        private lateinit var m_progressDialog: ProgressDialog
+        private const val MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 24
     }
 }

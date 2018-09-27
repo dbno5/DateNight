@@ -59,7 +59,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     TextView m_website;
 
     private final Activity m_context;
-    private final YelpDataModel m_businessModel = new YelpDataModel(YelpDataGetter.m_listBusinesses);
+    private final YelpDataModel m_businessModel = new YelpDataModel(YelpDataGetter.Companion.getM_listBusinesses());
     private Business m_curBusiness;
     private boolean m_onlyOneBusiness;
 
@@ -193,10 +193,10 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
 
     private void setDistance()
     {
-        if(!YelpDataGetter.isUsedDefaultLocation())
-        {
-            m_distance.setText(m_businessModel.getDistance(m_curBusiness));
-        }
+//        if(!YelpDataGetter.isUsedDefaultLocation())
+//        {
+//            m_distance.setText(m_businessModel.getDistance(m_curBusiness));
+//        }
     }
 
     private void setAdditionalRestaurantDetails()

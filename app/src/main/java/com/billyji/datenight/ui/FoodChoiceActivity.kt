@@ -8,16 +8,14 @@ import android.view.MenuItem
 import com.billyji.datenight.R
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter
 import kotlinx.android.synthetic.main.activity_food_choices.*
-import kotlinx.android.synthetic.main.selected_food_detail.*
 
 import java.util.ArrayList
 import java.util.Arrays
 
-
 class FoodChoiceActivity : AppCompatActivity() {
 
-    private var m_restaurantReference: MutableList<String>? = null
-    private var m_foodListAdapter: FoodChoiceListAdapter? = null
+    private var restaurantReference: MutableList<String>? = null
+    private var foodListAdapter: FoodChoiceListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +48,8 @@ class FoodChoiceActivity : AppCompatActivity() {
     }
 
     private fun expandItem() {
-        m_foodListAdapter!!.setOnlyOneBusiness()
-        val animationAdapter = SwingLeftInAnimationAdapter(m_foodListAdapter!!)
+        foodListAdapter!!.setOnlyOneBusiness()
+        val animationAdapter = SwingLeftInAnimationAdapter(foodListAdapter!!)
 
         animationAdapter.setAbsListView(all_food_list!!)
         all_food_list!!.adapter = animationAdapter
@@ -72,21 +70,21 @@ class FoodChoiceActivity : AppCompatActivity() {
     }
 
     private fun setUpListAdapter() {
-        m_restaurantReference = ArrayList(Arrays.asList("x", "x", "x", "x", "x"))
-        m_foodListAdapter = FoodChoiceListAdapter(this, m_restaurantReference!!)
-        val animationAdapter = SwingLeftInAnimationAdapter(m_foodListAdapter!!)
+        restaurantReference = ArrayList(Arrays.asList("x", "x", "x", "x", "x"))
+        foodListAdapter = FoodChoiceListAdapter(this, restaurantReference!!)
+        val animationAdapter = SwingLeftInAnimationAdapter(foodListAdapter!!)
 
         animationAdapter.setAbsListView(all_food_list!!)
         all_food_list!!.adapter = animationAdapter
-        all_food_list!!.enableSwipeToDismiss { listView, reverseSortedPositions ->
+        all_food_list!!.enableSwipeToDismiss { _, reverseSortedPositions ->
             for (position in reverseSortedPositions) {
-                m_foodListAdapter!!.removeBusiness(position)
+                foodListAdapter!!.removeBusiness(position)
             }
         }
     }
 
     private fun removeReference() {
-        m_restaurantReference!!.removeAt(0)
+        restaurantReference!!.removeAt(0)
     }
 }
 
