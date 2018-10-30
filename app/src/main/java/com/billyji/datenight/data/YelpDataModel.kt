@@ -20,7 +20,6 @@ class YelpDataModel(private val m_allBusinesses: List<Business>) {
         get() = fiveRandomBusinesses
 
     init {
-
         userLocation.latitude = LocationGetter.getLatitudeLast()
         userLocation.longitude = LocationGetter.getLongitudeLast()
     }

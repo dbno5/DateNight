@@ -32,8 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoodChoiceListAdapter extends ArrayAdapter<String>
-{
+public class FoodChoiceListAdapter extends ArrayAdapter<String> {
     @BindView(R.id.stars)
     ImageView m_numStars;
     @BindView(R.id.food_picture)
@@ -128,11 +127,11 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
     private void setFoodPicture(int position)
     {
         Picasso
-                .with(m_context)
-                .load(m_curBusiness.getImageUrl())
-                .resize(100, 100)
-                .centerCrop()
-                .into(m_foodPicture);
+            .with(m_context)
+            .load(m_curBusiness.getImageUrl())
+            .resize(100, 100)
+            .centerCrop()
+            .into(m_foodPicture);
 
         setListenerForLargePicture(position);
     }
@@ -193,10 +192,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
 
     private void setDistance()
     {
-//        if(!YelpDataGetter.isUsedDefaultLocation())
-//        {
-//            m_distance.setText(m_businessModel.getDistance(m_curBusiness));
-//        }
+        m_distance.setText(m_businessModel.getDistance(m_curBusiness));
     }
 
     private void setAdditionalRestaurantDetails()
@@ -281,18 +277,18 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String>
                 {
                     public boolean onTouch(View v, MotionEvent event)
                     {
-                        switch (event.getAction())
-                        {
-                            case MotionEvent.ACTION_DOWN:
-                            popupWindow.dismiss();
-                            break;
-                            case MotionEvent.ACTION_UP:
-                            v.performClick();
-                            break;
-                            default:
-                            break;
-                        }
-                        return true;
+                    switch (event.getAction())
+                    {
+                        case MotionEvent.ACTION_DOWN:
+                        popupWindow.dismiss();
+                        break;
+                        case MotionEvent.ACTION_UP:
+                        v.performClick();
+                        break;
+                        default:
+                        break;
+                    }
+                    return true;
                     }
                 });
 

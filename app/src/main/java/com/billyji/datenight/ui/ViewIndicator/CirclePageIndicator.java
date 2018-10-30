@@ -19,24 +19,14 @@ import static android.widget.LinearLayout.HORIZONTAL;
 import static java.lang.Math.abs;
 
 public class CirclePageIndicator extends View {
-
-    private static final int INVALID_POINTER = -1;
-
     private float mRadius;
     private final Paint mPaintPageFill = new Paint(ANTI_ALIAS_FLAG);
     private final Paint mPaintStroke = new Paint(ANTI_ALIAS_FLAG);
-    private final Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
-
 
     private int mOrientation;
     private boolean mCentered;
-    private boolean mSnap;
-
-
     ViewFlipper viewFlipper;
-
     private int currentDisplayedChild;
-
 
     public CirclePageIndicator(Context context) {
        this(context, null);
@@ -60,7 +50,6 @@ public class CirclePageIndicator extends View {
         final float defaultStrokeWidth = res.getDimension(R.dimen.default_circle_indicator_stroke_width);
         final float defaultRadius = res.getDimension(R.dimen.default_circle_indicator_radius);
         final boolean defaultCentered = res.getBoolean(R.bool.default_circle_indicator_centered);
-        final boolean defaultSnap = res.getBoolean(R.bool.default_circle_indicator_snap);
 
         //Retrieve styles attributes
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CirclePageIndicator, defStyle, 0);
@@ -72,16 +61,15 @@ public class CirclePageIndicator extends View {
         mPaintStroke.setStyle(Paint.Style.STROKE);
         mPaintStroke.setColor(a.getColor(R.styleable.CirclePageIndicator_strokeColor, defaultStrokeColor));
         mPaintStroke.setStrokeWidth(a.getDimension(R.styleable.CirclePageIndicator_strokeWidth, defaultStrokeWidth));
+        Paint mPaintFill = new Paint(ANTI_ALIAS_FLAG);
         mPaintFill.setStyle(Paint.Style.FILL);
         mPaintFill.setColor(a.getColor(R.styleable.CirclePageIndicator_fillColor, defaultFillColor));
         mRadius = a.getDimension(R.styleable.CirclePageIndicator_radius, defaultRadius);
-        mSnap = a.getBoolean(R.styleable.CirclePageIndicator_snap, defaultSnap);
 
         Drawable background = a.getDrawable(R.styleable.CirclePageIndicator_android_background);
         if (background != null) {
             setBackground(background);
         }
-
         a.recycle();
     }
 
@@ -127,14 +115,13 @@ public class CirclePageIndicator extends View {
             longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f) - ((count * threeRadius) / 2.0f);
         }
 
-        float dX;
-        float dY;
-
         float pageFillRadius = mRadius;
         if (mPaintStroke.getStrokeWidth() > 0) {
             pageFillRadius -= mPaintStroke.getStrokeWidth() / 2.0f;
         }
 
+        float dX;
+        float dY;
         //Draw stroked circles
         for (int iLoop = 0; iLoop < count; iLoop++) {
             float drawLong = longOffset + (iLoop * threeRadius);
@@ -164,61 +151,6 @@ public class CirclePageIndicator extends View {
         }
     }
 
-    /**
-     * Determines the width of this view
-     *
-     * @param measureSpec
-     *            A measureSpec packed into an int
-     * @return The width of the view, honoring constraints from measureSpec
-     */
-    private int measureLong(int measureSpec) {
-        int result;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if ((specMode == MeasureSpec.EXACTLY) || (viewFlipper == null)) {
-            //We were told how big to be
-            result = specSize;
-        } else {
-            //Calculate the width according the views count
-            final int count = viewFlipper.getChildCount();
-            result = (int)(getPaddingLeft() + getPaddingRight()
-                    + (count * 2 * mRadius) + (count - 1) * mRadius + 1);
-            //Respect AT_MOST value if that was what is called for by measureSpec
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
-
-    /**
-     * Determines the height of this view
-     *
-     * @param measureSpec
-     *            A measureSpec packed into an int
-     * @return The height of the view, honoring constraints from measureSpec
-     */
-    private int measureShort(int measureSpec) {
-        int result;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
-
-        if (specMode == MeasureSpec.EXACTLY) {
-            //We were told how big to be
-            result = specSize;
-        } else {
-            //Measure the height
-            result = (int)(2 * mRadius + getPaddingTop() + getPaddingBottom() + 1);
-            //Respect AT_MOST value if that was what is called for by measureSpec
-            if (specMode == MeasureSpec.AT_MOST) {
-                result = Math.min(result, specSize);
-            }
-        }
-        return result;
-    }
-
-
     @Override
     protected Parcelable onSaveInstanceState() {
         SavedState savedState = new SavedState(super.onSaveInstanceState());
@@ -237,7 +169,7 @@ public class CirclePageIndicator extends View {
     static class SavedState extends BaseSavedState {
         int currentDisplayedChild;
 
-        public SavedState(Parcelable superState) {
+        SavedState(Parcelable superState) {
             super(superState);
         }
 
@@ -252,7 +184,6 @@ public class CirclePageIndicator extends View {
             dest.writeInt(currentDisplayedChild);
         }
 
-        @SuppressWarnings("UnusedDeclaration")
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             @Override
             public SavedState createFromParcel(Parcel in) {

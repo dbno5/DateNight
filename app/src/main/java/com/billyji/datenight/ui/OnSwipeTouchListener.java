@@ -12,7 +12,6 @@ import com.billyji.datenight.R;
 import com.billyji.datenight.ui.ViewIndicator.CirclePageIndicator;
 
 public class OnSwipeTouchListener implements OnTouchListener {
-
     private final GestureDetector gestureDetector;
     private ViewFlipper viewFlipper;
     private CirclePageIndicator circlePageIndicator;
@@ -62,7 +61,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
-    public void onSwipeRight() {
+    private void onSwipeRight() {
         int displayedChild = viewFlipper.getDisplayedChild();
         if(displayedChild != 2) {
             viewFlipper.setInAnimation(context, R.anim.in_from_left);
@@ -72,7 +71,7 @@ public class OnSwipeTouchListener implements OnTouchListener {
         }
     }
 
-    public void onSwipeLeft() {
+    private void onSwipeLeft() {
         int displayedChild = viewFlipper.getDisplayedChild();
         if(displayedChild != 0) {
             viewFlipper.setInAnimation(context, R.anim.in_from_right);

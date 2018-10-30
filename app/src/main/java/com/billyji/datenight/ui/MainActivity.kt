@@ -30,9 +30,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setUpSpinners()
         setUpFlipperAndPageIndicator()
+    }
+
+    override fun onStart() {
+        super.onStart()
 
         checkForPermissions()
         find_food.setOnClickListener {
@@ -150,10 +153,6 @@ class MainActivity : AppCompatActivity() {
             if (result != YelpDataGetter.DATA_FETCHED) {
                 Toast.makeText(activityReference.get(), R.string.no_data_received.toString() + result, Toast.LENGTH_LONG).show()
                 return
-            }
-
-            if (YelpDataGetter.isUsedDefaultLocation) {
-                Toast.makeText(activityReference.get(), R.string.using_default_location, Toast.LENGTH_LONG).show()
             }
 
             val intent = Intent(activityReference.get(), FoodChoiceActivity::class.java)

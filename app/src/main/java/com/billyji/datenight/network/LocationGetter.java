@@ -28,7 +28,6 @@ public class LocationGetter
             return;
         }
 
-        //We want to try to use network.
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_COARSE);
         criteria.setAltitudeRequired(false);
