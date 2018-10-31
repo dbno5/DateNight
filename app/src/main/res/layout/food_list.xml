@@ -15,9 +15,7 @@
         android:id="@+id/thumbnail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginRight="5dip"
         android:layout_marginEnd="5dip"
         android:background="@drawable/image_bg"
         android:padding="3dip">
@@ -28,7 +26,6 @@
             android:layout_height="100dp"
             android:adjustViewBounds="true"
             android:contentDescription="@null"/>
-
     </LinearLayout>
 
     <!-- Restaurant name -->
@@ -37,12 +34,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
         android:layout_toEndOf="@+id/thumbnail"
         android:textColor="#040404"
         android:textStyle="bold"
         android:typeface="sans"
-        android:layout_marginRight="50dip"
         android:layout_marginEnd="50dip"/>
 
     <!-- Categories -->
@@ -53,68 +48,56 @@
         android:layout_below="@id/restaurant_name"
         android:layout_marginTop="1dip"
         android:layout_toEndOf="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
         android:textColor="#343434"
-        android:layout_marginRight="50dip"
         android:layout_marginEnd="50dip"/>
 
-    <LinearLayout
-        android:id="@+id/stars_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/categories"
-        android:layout_toEndOf="@id/thumbnail"
-        android:layout_toRightOf="@id/thumbnail"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <!--  Stars -->
-        <ImageView
-            android:id="@+id/stars"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:contentDescription="@null"/>
-
-        <!-- Number of Reviews -->
-        <TextView
-            android:id="@+id/reviews"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/stars_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dip"
-            android:layout_marginStart="10dip"/>
-    </LinearLayout>
+            android:layout_below="@id/categories"
+            android:layout_toEndOf="@id/thumbnail"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <!--  Stars -->
+            <ImageView
+                android:id="@+id/stars"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:contentDescription="@null"/>
+
+            <!-- Number of Reviews -->
+            <TextView
+                android:id="@+id/reviews"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dip"/>
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <!-- Dollar Signs -->
-    <TextView
-        android:id="@+id/dollar_signs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:adjustViewBounds="true"
-        android:scaleType="fitEnd"
-        android:layout_marginRight="10dip"
-        android:layout_marginEnd="10dip"
-        />
-
+        <TextView
+            android:id="@+id/dollar_signs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitEnd"
+            android:layout_marginEnd="10dip" />
+        <!--Distance-->
         <TextView
             android:id="@+id/distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/dollar_signs"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:adjustViewBounds="true"
             android:scaleType="fitEnd"
-            android:layout_marginRight="10dip"
-            android:layout_marginEnd="10dip"
-            />
-
+            android:layout_marginEnd="10dip" />
     </RelativeLayout>
 </RelativeLayout>

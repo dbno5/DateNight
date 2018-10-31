@@ -30,7 +30,7 @@
         <activity
             android:name="com.billyji.datenight.ui.FoodChoiceActivity"
             android:label="@string/title_food_choices"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="sensorPortrait"
             >
             <meta-data

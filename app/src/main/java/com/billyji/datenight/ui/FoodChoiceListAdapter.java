@@ -62,7 +62,7 @@ public class FoodChoiceListAdapter extends ArrayAdapter<String> {
     private Business m_curBusiness;
     private boolean m_onlyOneBusiness;
 
-    FoodChoiceListAdapter(Activity context, List<String> listSizeReference)//, YelpDataModel m_businesses)
+    FoodChoiceListAdapter(Activity context, List<String> listSizeReference)
     {
         super(context, R.layout.food_list, listSizeReference);
 

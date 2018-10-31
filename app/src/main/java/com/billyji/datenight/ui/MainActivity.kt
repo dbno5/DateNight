@@ -25,7 +25,6 @@ import com.billyji.datenight.ui.ViewIndicator.CirclePageIndicator
 import java.lang.ref.WeakReference
 import java.net.URL
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,14 +62,12 @@ class MainActivity : AppCompatActivity() {
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
         price_spinner.setAdapter(adapter)
         price_spinner.selectedIndex = 1
-        price_spinner.setTextColor(ContextCompat.getColor(this, R.color.dollar_sign_color))
 
         adapter = ArrayAdapter.createFromResource(this,
                 R.array.stars_options, R.layout.spinner_item)
         adapter.setDropDownViewResource(R.layout.spinner_dropdown)
         stars_spinner.setAdapter(adapter)
         stars_spinner.selectedIndex = 2
-        stars_spinner.setTextColor(ContextCompat.getColor(this, R.color.stars_color))
     }
 
     private fun setUpFlipperAndPageIndicator() {
@@ -98,8 +95,9 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setFoodSelectionDetails() {
         FoodSelectionDataModel.maxDistance = distance_spinner.selectedIndex.toString().toInt()
-        FoodSelectionDataModel.minStars = stars_spinner.selectedIndex.toString().toDouble()
-        FoodSelectionDataModel.maxPrice = price_spinner.selectedIndex.toString()
+        FoodSelectionDataModel.maxDollarSigns = price_spinner.selectedIndex.toString().toInt() + 1
+        //Need to add 1 to index to match number of stars(Index 0 == 1 star)
+        FoodSelectionDataModel.minStars = stars_spinner.selectedIndex.toString().toDouble() + 1
     }
 
     private fun callYelpAPI() {
