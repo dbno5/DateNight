@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="10dp"
-        android:backgroundTint="@color/vpi__bright_foreground_disabled_holo_light"
+        app:backgroundTint="@color/vpi__bright_foreground_disabled_holo_light"
         app:srcCompat="@drawable/dice" />
 </android.support.design.widget.CoordinatorLayout>
 

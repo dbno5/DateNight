@@ -53,10 +53,6 @@ class FoodChoiceActivity : AppCompatActivity() {
 
     private fun expandItem() {
         foodListAdapter!!.setOnlyOneBusiness()
-        val animationAdapter = SwingLeftInAnimationAdapter(foodListAdapter!!)
-
-        animationAdapter.setAbsListView(all_food_list!!)
-        all_food_list!!.adapter = animationAdapter
         all_food_list!!.disableSwipeToDismiss()
     }
 }
