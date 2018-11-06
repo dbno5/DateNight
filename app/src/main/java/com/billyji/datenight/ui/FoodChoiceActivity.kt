@@ -2,8 +2,7 @@ package com.billyji.datenight.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
+import android.view.View
 
 import com.billyji.datenight.R
 import com.nhaarman.listviewanimations.appearance.simple.SwingLeftInAnimationAdapter
@@ -13,59 +12,17 @@ import java.util.ArrayList
 import java.util.Arrays
 
 class FoodChoiceActivity : AppCompatActivity() {
-
     private var restaurantReference: MutableList<String>? = null
     private var foodListAdapter: FoodChoiceListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_choices)
-
         setUpListAdapter()
-        setToolbarTitle(getString(R.string.swipe_two))
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_options, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_refresh -> setUpListAdapter()
-            android.R.id.home -> finish()
-            else -> {
-            }
-        }
-
-        return true
-    }
-
-    private fun setToolbarTitle(title: String) {
-        if (supportActionBar != null) {
-            supportActionBar!!.title = title
-        }
-    }
-
-    private fun expandItem() {
-        foodListAdapter!!.setOnlyOneBusiness()
-        val animationAdapter = SwingLeftInAnimationAdapter(foodListAdapter!!)
-
-        animationAdapter.setAbsListView(all_food_list!!)
-        all_food_list!!.adapter = animationAdapter
-        all_food_list!!.disableSwipeToDismiss()
-    }
-
-    fun update(businessListSize: Int) {
-        removeReference()
-        when (businessListSize) {
-            1 -> {
-                setToolbarTitle(getString(R.string.finished_picking))
-                expandItem()
-            }
-            3 -> setToolbarTitle(getString(R.string.remove_two_more))
-            else -> {
-            }
+        val fab: View = findViewById(R.id.action_refresh)
+        fab.setOnClickListener { _ ->
+            setUpListAdapter()
         }
     }
 
@@ -83,8 +40,20 @@ class FoodChoiceActivity : AppCompatActivity() {
         }
     }
 
+    fun update(businessListSize: Int) {
+        removeReference()
+        if (businessListSize == 1) {
+            expandItem()
+        }
+    }
+
     private fun removeReference() {
         restaurantReference!!.removeAt(0)
+    }
+
+    private fun expandItem() {
+        foodListAdapter!!.setOnlyOneBusiness()
+        all_food_list!!.disableSwipeToDismiss()
     }
 }
 

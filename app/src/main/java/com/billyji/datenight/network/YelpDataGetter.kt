@@ -54,9 +54,8 @@ class YelpDataGetter(private val latitudeToSearch: Double, private val longitude
         val radius = Integer.toString(1609 * FoodSelectionDataModel.maxDistance)
 
         //Set some additional parameters
-        yelpParams!!["radius"] = radius //5 miles
+        yelpParams!!["radius"] = radius
         yelpParams!!["limit"] = "50"
-        yelpParams!!["sort_by"] = "distance"
         yelpParams!!["term"] = "restaurants"
     }
 

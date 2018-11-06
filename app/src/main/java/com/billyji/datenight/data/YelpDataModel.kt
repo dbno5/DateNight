@@ -29,10 +29,6 @@ class YelpDataModel(private val m_allBusinesses: List<Business>) {
         val r = Random()
         //Counter variable used in case there aren't 5 restaurants in the area
         var count = 0
-        //need to check if there are five businesses nearby
-        if (m_allBusinesses.size < 5) {
-
-        }
         while (fiveRandomBusinesses!!.size < 5 && m_allBusinesses.isNotEmpty()
                 && count < 50) {
             val randomBusiness = r.nextInt(m_allBusinesses.size)
@@ -50,7 +46,7 @@ class YelpDataModel(private val m_allBusinesses: List<Business>) {
     private fun withinParameters(business: Business): Boolean {
         return business.price != null &&
                 business.rating >= FoodSelectionDataModel.minStars &&
-                business.price.length <= java.lang.Double.parseDouble(FoodSelectionDataModel.maxPrice)
+                business.price.length <= FoodSelectionDataModel.maxDollarSigns
     }
 
     private fun addBusiness(business: Business) {

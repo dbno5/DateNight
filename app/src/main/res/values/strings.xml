@@ -8,28 +8,26 @@
     <string name="progess_dialog_text">Finding you some eats…</string>
     <string name="find_food_button">Find me food!</string>
     <string name="navigate_me">Navigate me!</string>
-    <string name="distance">Max distance?</string>
-    <string name="min_stars">Min # stars?</string>
-    <string name="max_price">Max $ signs?</string>
+    <string name="distance">How far away?</string>
+    <string name="min_stars">What you trying to eat?</string>
+    <string name="max_price">How much money you got?</string>
     <string-array name="distance_options">
-        <item>1mi</item>
-        <item>2mi</item>
-        <item>5mi</item>
-        <item>10mi</item>
-        <item>20mi</item>
+        <item>Let\'s walk</item>
+        <item>Let\'s bike</item>
+        <item>Let\'s drive</item>
+        <item>Let\'s really drive</item>
     </string-array>
     <string-array name="price_options">
-        <item>$</item>
-        <item>$$</item>
-        <item>$$$</item>
-        <item>$$$$</item>
+        <item>Cheap food is life</item>
+        <item>Date night!</item>
+        <item>Money\'s not an issue</item>
+        <item>I got too much money</item>
     </string-array>
     <string-array name="stars_options">
-        <item>★</item>
-        <item>★★</item>
-        <item>★★★</item>
-        <item>★★★★</item>
-        <item>★★★★★</item>
+        <item>I\'d eat garbage</item>
+        <item>I\'d eat day old McDonalds</item>
+        <item>I\'d eat fresh McDonalds</item>
+        <item>I\'d eat only the finest</item>
     </string-array>
     <string name="request_location"><![CDATA[Location permission should to be granted to use this app. Otherwise we can only use with a default location. You can go into Device settings->App->This app-> and Permissions to allow location requests.]]></string>
     <string name="permission_request_title">Permission Request</string>
@@ -39,7 +37,6 @@
     <string name="no_data_received">We could not get data:</string>
     <string name="using_default_location">Could not get location...searching in San Diego...</string>
     <string name="finding_food_notification">Finding you some eats…</string>
-    <string name="netflix_construction">Netflix portion under construction</string>
     <string name="finished_picking">Congratulations!</string>
     <string name="remove_two_more">Remove two more</string>
     <string name="swipe_two">Swipe away two options</string>
